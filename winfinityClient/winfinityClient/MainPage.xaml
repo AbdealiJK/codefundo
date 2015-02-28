@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wptoolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -42,12 +43,17 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="WINFINITY" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="create room" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="setup room" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            
+            <StackPanel>
+                <TextBlock FontFamily="Segoe UI Light" FontSize="32" Text="My ID"/>
+                <TextBlock x:Name="DeviceUid" FontFamily="Segoe UI" FontSize="42" HorizontalAlignment="Center" Text="123456"/>
+                <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,20" />
+                <Button x:Name="CreateRoom" wptoolkit:TiltEffect.IsTiltEnabled="True" Click="CreateRoom_Click" Height="80" Width="250" Content="Create room"/>
+            </StackPanel>
         </Grid>
 
         <!--Uncomment to see an alignment grid to help ensure your controls are
