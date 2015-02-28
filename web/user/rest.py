@@ -91,7 +91,7 @@ class RoomViewSet(viewsets.ViewSet):
     def create(self, request):
         _key = request.POST.get('key', None)
         _type = request.POST.get('type', None)
-        if key == None:
+        if _key == None:
             return Response(viewset_response(
                 "Your key is required to create a room", {}))
         user = get_object_or_None(TempUser, key=_key)
