@@ -89,3 +89,13 @@ STATIC_URL = '/static/'
 
 # Always use IPython for shell_plus
 SHELL_PLUS = "ipython"
+
+# Directories
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+
+# Social auth
+MICROSOFT_CLIENT_ID = 'YOUR-APP-ID'
+MICROSOFT_CLIENT_SECRET = 'YOUR-APP-SECRET'
