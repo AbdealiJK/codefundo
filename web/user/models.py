@@ -25,10 +25,10 @@ class BoundingBox(models.Model):
         A class to store the data about a rectangle
         It is assumed the (x1, y1) is top left when phone is held in portrait mode
     """
-    x1 = models.IntegerField(default=0)
-    x2 = models.IntegerField(default=0)
-    y1 = models.IntegerField(default=0)
-    y2 = models.IntegerField(default=0)
+    x1 = models.FloatField(default=0)
+    x2 = models.FloatField(default=0)
+    y1 = models.FloatField(default=0)
+    y2 = models.FloatField(default=0)
 
     def copy(self, b):
         self.x1 = b.x1
