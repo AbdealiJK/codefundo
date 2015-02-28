@@ -173,14 +173,10 @@ class RoomViewSet(viewsets.ViewSet):
                 return Response(viewset_response(
                     'We could not find any such room', {}))
             _file = request.FILES.get('file', None)
-            print _file, _file.name
-            # _new_file = File()
-            # _new_file
             if _file == None:
                 return Response(viewset_response(
                     'A file is needed', {}))
             room.shared_file.save(_file.name, _file, save=True)
-            print room, room.shared_file
             # TODO : rename file to avoid clashes
             room.save()
             room_data = RoomSerializer(room).data
