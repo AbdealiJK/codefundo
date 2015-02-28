@@ -24,16 +24,29 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="WINFINITY" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="create room" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="RoomTitle" Text="create room" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <Line Fill="LightGray" StrokeThickness="2" X1="0" X2="1"/>
+                <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Height="80" Width="200"/>
-                    <Button Height="80" Width="200"/>
+                    <Button x:Name="TwoDevice" Content="2 Device" Click="TwoDevice_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="FourDevice" Content="4 Device" Click="FourDevice_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                </StackPanel>
+                <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="Device1" Content="Device 1" Background="Green" Click="Device1_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="Device2" Content="Device 2" Click="Device2_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                </StackPanel>
+                <StackPanel x:Name="DevicePanelFour" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="Device3" Content="Device 3" Click="Device3_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="Device4" Content="Device 4" Click="Device4_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                    <Button x:Name="DoneSetup" Content="Connect" Click="DoneSetup_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="ImageUpload" Content="Send Image" Click="ImageUpload_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
