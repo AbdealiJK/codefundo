@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace winfinityClient.Helpers
 {
-    public class DataofUser
+    public class UserOfRoom
     {
         public string key { get; set; }
-        public List<object> rooms { get; set; }
+        public int position { get; set; }
+    }
+
+    public class Room
+    {
+        public int room_id { get; set; }
+        public List<UserOfRoom> users { get; set; }
+        public int configuration { get; set; }
+        public string shared_file { get; set; }
+    }
+
+    public class DataOfRooms
+    {
+        public string key { get; set; }
+        public List<Room> rooms { get; set; }
         public int position { get; set; }
     }
 
@@ -17,6 +31,6 @@ namespace winfinityClient.Helpers
     {
         public int status { get; set; }
         public string message { get; set; }
-        public DataofUser data { get; set; }
+        public DataOfRooms data { get; set; }
     }
 }
