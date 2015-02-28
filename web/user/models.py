@@ -14,8 +14,8 @@ import datetime
 
 CONFIGURATION_CHOICES = (
     (0, 'NO_CONFIG'),
-    (1, '2_HORIZ_CONFIG'),
-    (2, '2_VERTICAL_CONFIG'),
+    (1, '2_LANDSCAPE_CONFIG'),
+    (2, '2_PORTRAIT_CONFIG'),
     (3, '4_PORTRAIT_CONFIG'),
     (4, '4_LANDSCAPE_CONFIG'),
 )

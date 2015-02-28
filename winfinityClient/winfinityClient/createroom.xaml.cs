@@ -180,6 +180,8 @@ namespace winfinityClient
                     if (response.ResponseStatus == ResponseStatus.Completed)
                     {
                         _myWorkspace = JsonConvert.DeserializeObject<RoomAddUser>(response.Content);
+                        PhoneApplicationService.Current.State["MyWS"] = _myWorkspace;
+
                         //show output
                         Dispatcher.BeginInvoke(() =>
                         {
@@ -192,6 +194,7 @@ namespace winfinityClient
                             if (SystemTray.ProgressIndicator != null)
                                 SystemTray.ProgressIndicator.IsVisible = false;
                             SystemTray.IsVisible = false;
+                            NavigationService.Navigate(new Uri("/Playground.xaml?ismaster=" + "true", UriKind.Relative));
                         });
                     }
                 });

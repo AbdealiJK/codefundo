@@ -21,12 +21,16 @@ def calculate_room(room, user):
     all_configs = [str(CONFIGURATION_CHOICES[i][0]) for i in xrange(len(CONFIGURATION_CHOICES))]
     all_config_names = [str(CONFIGURATION_CHOICES[i][1]) for i in xrange(len(CONFIGURATION_CHOICES))]
 
+    rows = 0
+    cols = 0
+    _max = rows * cols
+    user = []
+    bbox = []
+    size = []
+
     if room.configuration == 0: # NO_CONFIG
         return
-    elif room.configuration == 1: # 2_HORIZ_CONFIG
-        # Here, there will be one phone on top and another phone at the
-        # bottom. Both will be in landscape mode.
-
+    elif room.configuration == 1: # 2_LANDSCAPE_CONFIG
         # Temp variables
         user0 = room.user.filter(position=0)
         user1 = room.user.filter(position=1)
@@ -37,17 +41,28 @@ def calculate_room(room, user):
         if user.position == 0: # Top screen
             bbox1.x2 = bbox0.x1
             bbox1.y2 = bbox0.y2
-            bbox1.x1 = int((bbox0.x1 - bbox0.x2) * 1.0/ size0.width * size1.width)
+            bbox1.x1 = bbox0.x1 + int((bbox0.x1 - bbox0.x2) * 1.0/ size0.width * size1.width)
             bbox1.y1 = bbox0.y1
         elif user.position == 1: # Bottom screen
-            bbox0.x2 = bbox0.x1
-            bbox0.y2 = bbox0.y2
-            bbox0.x1 = int((bbox0.x1 - bbox0.x2) * 1.0/ size0.width * size1.width)
-            bbox0.y1 = bbox0.y1
+            bbox0.x1 = bbox1.x2
+            bbox0.y2 = bbox1.y2
+            bbox0.x1 = bbox1.x2 + int((bbox1.x2 - bbox1.x1) * 1.0/ size1.width * size0.width)
+            bbox0.y1 = bbox1.y1
         return
-    elif room.configuration == 2: # 2_VERTICAL_CONFIG
-        return
+    elif room.configuration == 2: # 2_PORTRAIT_CONFIG
+        rows = 1
+        cols = 2
+        _max = rows * cols
     elif room.configuration == 3: # 4_PORTRAIT_CONFIG
-        return
+        rows = 2
+        cols = 2
+        _max = rows * cols
     elif room.configuration == 4: # 4_LANDSCAPE_CONFIG
         return
+
+    master = user.position
+
+
+def calculate_recursive(room, master, rows, cols, user, bbox, size):
+    
+    return

@@ -160,7 +160,8 @@ class RoomViewSet(viewsets.ViewSet):
                     {}))
 
             # Save the position that needs to be set and add ot the room
-            new_user.position = _position
+            if _position != None:
+                new_user.position = _position
             new_user.save()
             room.user.add(new_user)
 

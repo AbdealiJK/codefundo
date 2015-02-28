@@ -17,6 +17,7 @@ namespace winfinityClient.Helpers
         public int room_id { get; set; }
         public List<UserA> users { get; set; }
         public int configuration { get; set; }
+        public string shared_file { get; set; }
     }
 
     public class RoomAddUser
