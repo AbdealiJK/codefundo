@@ -21,13 +21,13 @@ class TempUser(models.Model):
     size = models.ForeignKey(Size, null=True, blank=True, related_name='tempuser')
 
 class Room(models.Model):
-	"""
+    """
         A room where multiple tempusers are connected
     """
     users = models.ManyToManyField(TempUser, null=True, blank=True, related_name='room')
 
 class Size(models.Model):
-	"""
+    """
         The size class
     """
     width = models.FloatField()

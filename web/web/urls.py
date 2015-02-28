@@ -17,4 +17,6 @@ urlpatterns = patterns('',
 	url(r'^user/', include('user.urls')),
 	url(r'^dash/', include('dash.urls')),
 	url('', include('social.apps.django_app.urls', namespace='social')),
+
+	url(r'^api/', include(router.urls)),
 )
