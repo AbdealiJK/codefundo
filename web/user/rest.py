@@ -8,7 +8,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from annoying.functions import get_object_or_None
-from user.models import TempUser, Room, Size
+from user.models import TempUser, Room, Size, CONFIGURATION_CHOICES
 from user.serializers import TempUserSerializer, RoomSerializer, SizeSerializer
 from user.utils import *
 # Python
