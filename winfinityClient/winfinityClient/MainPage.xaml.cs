@@ -38,7 +38,7 @@ namespace winfinityClient
         {
             RestClient myClient = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser/");
             RestRequest postRequest = new RestRequest { Method = Method.POST, RequestFormat = DataFormat.Json };
-            postRequest.AddQueryParameter("type", "create");
+            postRequest.AddParameter("type", "create",ParameterType.GetOrPost);
             try
             {
                 myClient.ExecuteAsync(postRequest, postResponse =>

@@ -9,10 +9,12 @@ namespace winfinityClient.Helpers
     public class User
     {
         public string key { get; set; }
+        public int position { get; set; }
     }
 
     public class DataofRoom
     {
+        public int configuration { get; set; }
         public int room_id { get; set; }
         public List<User> users { get; set; }
     }

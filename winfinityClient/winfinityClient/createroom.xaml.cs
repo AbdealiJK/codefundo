@@ -8,6 +8,8 @@ using System.Windows.Navigation;
 using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Newtonsoft.Json;
+using RestSharp;
 using winfinityClient.Helpers;
 using TiltEffect = Microsoft.Phone.Controls.TiltEffect;
 
@@ -19,6 +21,7 @@ namespace winfinityClient
         string[] _deviceIdList;
         int _noDevices;
         UserCreate _myID;
+        RoomCreate _myRoom;
 
         public createroom()
         {
@@ -122,19 +125,78 @@ namespace winfinityClient
         private void DoneSetup_Click(object sender, RoutedEventArgs e)
         {
             int nullCounter = 0;
-            for (int i = 0; i < _noDevices ; i++)
+            for (int i = 0; i < _noDevices; i++)
             {
                 if (_deviceIdList[i] == string.Empty || _deviceIdList[i] == null)
                     ++nullCounter;
             }
             if (nullCounter == 0)
             {
+
                 //Navigate to image workarea
                 MessageBox.Show("Done");
             }
             else
             {
                 MessageBox.Show("Enter Device IDs for all devices");
+            }
+        }
+
+        private void CreateNewRoom()
+        {
+            RestClient client = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/");
+            RestRequest request = new RestRequest { Method = Method.POST };
+            request.AddParameter("type", "create", ParameterType.GetOrPost);
+            request.AddParameter("configuration", (_noDevices == 2) ? "1" : "4", ParameterType.GetOrPost);
+            request.AddParameter("key", _myID.data.key, ParameterType.GetOrPost);
+            try
+            {
+                client.ExecuteAsync(request, response =>
+                {
+                    if (response.ResponseStatus == ResponseStatus.Completed)
+                    {
+                        _myRoom = JsonConvert.DeserializeObject<RoomCreate>(response.Content);
+                        Dispatcher.BeginInvoke(() =>
+                        {
+                            RoomTitle.Text = "room id " + _myRoom.data.room_id.ToString();
+                        });
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+        }
+
+        private void AddUserToRoom(string id, RoomCreate room, int position)
+        {
+            RestClient client = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/");
+            RestRequest request = new RestRequest { Method = Method.POST };
+            request.AddParameter("type", "add", ParameterType.GetOrPost);
+            request.AddParameter("room_id", room.data.room_id, ParameterType.GetOrPost);
+            request.AddParameter("new_key", id, ParameterType.GetOrPost);
+            request.AddParameter("key", _myID.data.key, ParameterType.GetOrPost);
+            request.AddParameter("position", position.ToString(), ParameterType.GetOrPost);
+            try
+            {
+                client.ExecuteAsync(request, response =>
+                {
+                    if (response.ResponseStatus == ResponseStatus.Completed)
+                    {
+                        Dispatcher.BeginInvoke(() =>
+                            {
+                                ToastPrompt toast = new ToastPrompt();
+                                toast.Message = "User added";
+                                toast.MillisecondsUntilHidden = 1000;
+                                toast.Show();
+                            });
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
     }

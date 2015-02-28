@@ -10,6 +10,7 @@ namespace winfinityClient.Helpers
     {
         public string key { get; set; }
         public List<object> rooms { get; set; }
+        public int position { get; set; }
     }
 
     public class UserCreate
