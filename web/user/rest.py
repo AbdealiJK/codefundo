@@ -27,7 +27,7 @@ class TempUserViewSet(viewsets.ViewSet):
         Information about a specific user
     """
     def list(self, request):
-        _key = request.POST.get('key', None)
+        _key = request.GET.get('key', None)
         if _key == None:
             users = TempUser.objects.all()
             users_data = TempUserSerializer(users, many=True).data
@@ -95,7 +95,7 @@ class RoomViewSet(viewsets.ViewSet):
             Gives data about all rooms
     """
     def list(self, request):
-        _id = request.POST.get('id', None)
+        _id = request.GET.get('id', None)
         if _id == None:
             rooms = Room.objects.all()
             rooms_data = RoomSerializer(rooms, many=True).data
@@ -184,8 +184,8 @@ class RoomViewSet(viewsets.ViewSet):
 
 class EventViewSet(viewsets.ViewSet):
     def list(self, request):
-        _room_id = request.POST.get('room_id', None)
-        _user_key = request.POST.get('user_key', None)
+        _room_id = request.GET.get('room_id', None)
+        _user_key = request.GET.get('user_key', None)
 
         # Check if given data exists
         room = get_object_or_None(Room, id=_room_id)
