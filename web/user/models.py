@@ -67,7 +67,7 @@ class Room(models.Model):
     """
     user = models.ManyToManyField(TempUser, null=True, blank=True, related_name='room')
     date_created = models.DateTimeField(auto_now_add=True)
-    shared_file = models.FileField(upload_to='/shared/', default='settings.MEDIA_ROOT/logo.jpg')
+    shared_file = models.FileField(upload_to='/shared/', default=settings.MEDIA_ROOT+'/logo.jpg')
 
     configuration = models.IntegerField(max_length=1, choices=CONFIGURATION_CHOICES, default=0)
     size = models.ForeignKey(Size, null=True, blank=True, related_name='room')

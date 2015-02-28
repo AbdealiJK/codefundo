@@ -148,7 +148,7 @@ class RoomViewSet(viewsets.ViewSet):
                     "We could not find any such room", {}))
             _new_key = request.POST.get('new_key', None)
 
-            # CHeck that the user exists and is not in any other room
+            # Check that the user exists and is not in any other room
             new_user = get_object_or_None(TempUser, key=_new_key)
             if new_user == None:
                 return Response(viewset_response(
@@ -164,13 +164,13 @@ class RoomViewSet(viewsets.ViewSet):
             room.user.add(new_user)
 
             room_data = RoomSerializer(room).data
-            return Response(viewset_response("done", room_data))
-        elif _type == "file":
+            return Response(viewset_response('done', room_data))
+        elif _type == 'file':
             _room_id = request.POST.get('room_id', None)
             room = get_object_or_None(Room, id=_room_id)
             if room == None:
                 return Response(viewset_response(
-                    "We could not find any such room", {}))
+                    'We could not find any such room', {}))
             _file = request.FILES.get('file', None)
             print _file
             room.shared_file = _file
@@ -218,10 +218,11 @@ class EventViewSet(viewsets.ViewSet):
         if user == None:
             return Response(viewset_response(
                 "We could not find any such user", {}))
-
         if room not in user.room.all():
             return Response(viewset_response(
                 "The user is not in the given room", {}))
+
+        # Save user information
         user.bounding_box.x1 = _bbox_x1
         user.bounding_box.x2 = _bbox_x2
         user.bounding_box.y1 = _bbox_y1
@@ -231,7 +232,7 @@ class EventViewSet(viewsets.ViewSet):
 
         # This handles all the computations needed and saves the required data 
         # in TempUser models - it modifies the room, user, size tables
-        calculate_room(room)
+        calculate_room(room, user)
 
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
