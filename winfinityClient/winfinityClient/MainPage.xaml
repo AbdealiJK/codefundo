@@ -51,7 +51,7 @@
             <StackPanel>
                 <TextBlock FontFamily="Segoe UI Light" FontSize="32" Text="My ID"/>
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <TextBlock x:Name="DeviceUid" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="42" HorizontalAlignment="Center" Text="123456"/>
+                    <TextBlock x:Name="DeviceUid" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="42" HorizontalAlignment="Center" Text="null"/>
                     <Image x:Name="RefreshUid" Tap="RefreshUid_Tap" Margin="30,0,0,0" Source="Assets\refresh.png"/>
                 </StackPanel>
                 <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,20" />
