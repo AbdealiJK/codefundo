@@ -17,4 +17,14 @@ urlpatterns = patterns('',
 	url('', include('social.apps.django_app.urls', namespace='social')),
 
 	url(r'^api/', include(router.urls)),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+)
+
+urlpatterns += static(settings.STATIC_URL,
+    document_root=settings.STATIC_ROOT)
+
+urlpatterns += patterns('',
+    (r'^' + settings.MEDIA_URL + '(?P<path>.*)$',
+        'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT
+        }
+))
