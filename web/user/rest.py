@@ -42,6 +42,9 @@ class TempUserViewSet(viewsets.ViewSet):
     def create(self, request):
         _type = request.POST.get('type', None)
         if _type == 'create':
+            # THe size is always calculated with portrait mode.
+            _size_w = request.POST.get('size_x', None)
+            _size_h = request.POST.get('size_y', None)
             r = 0
             max_trials = 100
 
@@ -134,7 +137,7 @@ class RoomViewSet(viewsets.ViewSet):
             if new_user == None:
                 return Response(viewset_response(
                     "We could not find the user to add", {}))
-            if new_user.rooms.count() > 0:
+            if new_user.room.count() > 0:
                 return Response(viewset_response(
                     "This user is already in another room. You may want to refresh his token",
                     {}))
