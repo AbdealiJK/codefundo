@@ -17,10 +17,11 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Image x:Name="ImageField" Source="Assets/AlignmentGrid.png">
-            <i:Interaction.Behaviors>
+        <Image x:Name="ImageField" Stretch="UniformToFill" Source="Assets/AlignmentGrid.png">
+            <!--<i:Interaction.Behaviors>
                 <helper:PanAndZoomBehavior x:Name="BehaviorRoot" MaxZoom="10"/>
-            </i:Interaction.Behaviors>
+            </i:Interaction.Behaviors>-->
+            
         </Image>
     </Grid>
 

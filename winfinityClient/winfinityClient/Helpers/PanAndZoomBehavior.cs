@@ -12,6 +12,11 @@ namespace winfinityClient.Helpers
         private readonly CompositeTransform _old = new CompositeTransform();
         private double _initialScale;
         private GestureListener _listener;
+        public UserCreate CurrentID { get; set; }
+        public RoomAddUser CurrentRoom { get; set; }
+        //image dimension
+        public double ImgWidth { get; set; }
+        public double ImgHeight { get; set; }
 
         public PanAndZoomBehavior()
         {
@@ -116,7 +121,7 @@ namespace winfinityClient.Helpers
                 TranslateY = e.VerticalChange
             };
 
-            ConstrainToParentBounds(img, translate);
+            //ConstrainToParentBounds(img, translate);
 
             img.RenderTransform = ComposeScaleTranslate(transform, translate);
         }

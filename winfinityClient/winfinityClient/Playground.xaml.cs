@@ -18,6 +18,7 @@ namespace winfinityClient
     {
         UserCreate _myId;
         RoomAddUser _myRoom;
+        BitmapImage _targetImage;
         public Playground()
         {
             InitializeComponent();
@@ -44,7 +45,13 @@ namespace winfinityClient
                         _myId = JsonConvert.DeserializeObject<UserCreate>(getResponse.Content);
                         Dispatcher.BeginInvoke(() =>
                         {
-                            ImageField.Source = new BitmapImage(new Uri(_myId.data.rooms[0].shared_file, UriKind.Absolute));
+                            _targetImage = new BitmapImage(new Uri(_myId.data.rooms[0].shared_file, UriKind.Absolute));
+                            BehaviorRoot.CurrentID = _myId;
+                            BehaviorRoot.CurrentRoom = _myRoom;
+                            if (_myId.data.position == 0)
+                                ImageField.Source = _targetImage;
+                            BehaviorRoot.ImgHeight = _targetImage.PixelHeight;
+                            BehaviorRoot.ImgWidth = _targetImage.PixelWidth;
                         });
                     }
                 });
