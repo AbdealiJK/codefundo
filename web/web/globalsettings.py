@@ -121,3 +121,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     )
 }
+
+FILE_UPLOAD_PERMISSIONS = 0644

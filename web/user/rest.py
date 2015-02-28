@@ -2,6 +2,7 @@
 from django.utils.html import strip_tags
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files import File
 # Apps
 from rest_framework import viewsets
 from rest_framework import status
@@ -172,10 +173,17 @@ class RoomViewSet(viewsets.ViewSet):
                 return Response(viewset_response(
                     'We could not find any such room', {}))
             _file = request.FILES.get('file', None)
-            print _file
-            room.shared_file = _file
+            print _file, _file.name
+            # _new_file = File()
+            # _new_file
+            if _file == None:
+                return Response(viewset_response(
+                    'A file is needed', {}))
+            room.shared_file.save(_file.name, _file, save=True)
+            print room, room.shared_file
             # TODO : rename file to avoid clashes
             room.save()
+            room_data = RoomSerializer(room).data
             return Response(viewset_response("done", room_data))
 
 class EventViewSet(viewsets.ViewSet):
