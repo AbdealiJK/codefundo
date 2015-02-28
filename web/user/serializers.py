@@ -3,6 +3,17 @@ from django.contrib.auth.models import User
 from user.models import TempUser, Room, Size
 
 
+class BoundingBox(serializers.Serializer):
+    x1 = serializers.IntegerField()
+    x2 = serializers.IntegerField()
+    y1 = serializers.IntegerField()
+    y2 = serializers.IntegerField()
+
+class SizeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Size
+        fields = ('width', 'height', )
+
 class TempUserKeySerializer(serializers.ModelSerializer):
     # user_id = serializers.IntegerField(source='id')
     class Meta:
@@ -18,17 +29,8 @@ class RoomSerializer(serializers.ModelSerializer):
 
 class TempUserSerializer(serializers.ModelSerializer):
     rooms = RoomSerializer(source="room", many=True)
+    size = SizeSerializer()
     # user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
         fields = ('key', 'rooms', 'position', 'size', )
-
-class SizeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Size
-
-class BoundingBox(serializers.Serializer):
-    x1 = serializers.IntegerField()
-    x2 = serializers.IntegerField()
-    y1 = serializers.IntegerField()
-    y2 = serializers.IntegerField()

@@ -49,7 +49,7 @@ class TempUserViewSet(viewsets.ViewSet):
             try:
                 _size_y = float(_size_y)
                 _size_x = float(_size_x)
-                assert(_size_y > 0 and _size_h > 0)
+                assert(_size_y > 0 and _size_x > 0)
             except TypeError:
                 return Response(viewset_response(
                     "Size data given is invalid", {}))
