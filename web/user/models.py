@@ -22,7 +22,11 @@ CONFIGURATION_CHOICES = (
 
 class Size(models.Model):
     """
-        The size class
+        The size class.
+        Width implies in the x direction
+        Height implies in the y direction
+
+        The width/height or x/y is with respect to portrait mode always
     """
     width = models.FloatField(null=True, blank=True)
     height = models.FloatField(null=True, blank=True)
