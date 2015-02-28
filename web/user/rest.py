@@ -45,6 +45,18 @@ class TempUserViewSet(viewsets.ViewSet):
             # THe size is always calculated with portrait mode.
             _size_w = request.POST.get('size_x', None)
             _size_h = request.POST.get('size_y', None)
+
+            try:
+                _size_h = float(_size_h)
+                _size_w = float(_size_w)
+                assert(_size_w > 0 && _size_h > 0)
+            except TypeError:
+                return Response(viewset_response(
+                    "Size data given is invalid", {}))
+            except AssertionError:
+                return Response(viewset_response(
+                    "Size data given cannot be negative", {}))
+
             r = 0
             max_trials = 100
 
@@ -62,8 +74,11 @@ class TempUserViewSet(viewsets.ViewSet):
                     return Response(viewset_response(
                         "Sorry, all our slots are full. Try again later",
                         {}))
+            # Create a user and save size and key
             user = TempUser.objects.create(key=r)
-            print user
+            user.size = Size.objects.create(width=_size_w, height=_size_h)
+            user.save()
+            user.size.save()
             user_data = TempUserSerializer(user).data
             return Response(viewset_response("done", user_data))
         else:

@@ -24,8 +24,8 @@ class Size(models.Model):
     """
         The size class
     """
-    width = models.FloatField()
-    height = models.FloatField()
+    width = models.FloatField(null=True, blank=True)
+    height = models.FloatField(null=True, blank=True)
 
 class TempUser(models.Model):
     """
