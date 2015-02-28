@@ -1,8 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 using Microsoft.Phone.Controls;
+using RestSharp;
 
 namespace winfinityClient.Helpers
 {
@@ -26,22 +28,48 @@ namespace winfinityClient.Helpers
             bbox = new BoundBox();
             MaxZoom = 10.0;
             ImageCenter = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
-            ImgWidth = 800;
-            ImgHeight = 800;
             isWidthFit = !((double)ImgHeight / ImgWidth > (double)ScreenSizeMod.YPixels / ScreenSizeMod.XPixels);
             if (isWidthFit)
             {
-                bbox.X1 = 0;
-                bbox.X2 = ImgWidth;
-                bbox.Y1 = -(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 - ImgHeight / 2.0);
-                bbox.Y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 + ImgHeight / 2.0);
+                bbox.x1 = 0;
+                bbox.x2 = ImgWidth;
+                bbox.y1 = 0;
+                bbox.y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth);
             }
             else
             {
-                bbox.Y1 = 0;
-                bbox.Y2 = ImgHeight;
-                bbox.X1 = -(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 - ImgWidth / 2.0);
-                bbox.X2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 + ImgWidth / 2.0);
+                bbox.y1 = 0;
+                bbox.y2 = ImgHeight;
+                bbox.x1 = 0;
+                bbox.x2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight);
+            }
+
+            if (CurrentID.data.position == 0)
+            {
+                RestClient client = new RestClient(UriMod.EventUri);
+                RestRequest request = new RestRequest();
+                request.Method = Method.POST;
+                request.AddParameter("room_id", CurrentRoom.data.room_id, ParameterType.GetOrPost);
+                request.AddParameter("user_key", CurrentID.data.key, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y1", bbox.y1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y2", bbox.y2, ParameterType.GetOrPost);
+                try
+                {
+                    client.ExecuteAsync(request, response =>
+                    {
+                        if (response.ResponseStatus == ResponseStatus.Completed)
+                        {
+                            //Do nothing
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    throw;
+                }
             }
         }
 
@@ -71,6 +99,30 @@ namespace winfinityClient.Helpers
             ImageCenter.Y += e.VerticalChange;
             bbox.Pan(e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
             //Send bbox to server
+            RestClient client = new RestClient(UriMod.EventUri);
+            RestRequest request = new RestRequest();
+            request.Method = Method.POST;
+            request.AddParameter("room_id", CurrentRoom.data.room_id, ParameterType.GetOrPost);
+            request.AddParameter("user_key", CurrentID.data.key, ParameterType.GetOrPost);
+            request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
+            request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
+            request.AddParameter("bbox_y1", bbox.y1, ParameterType.GetOrPost);
+            request.AddParameter("bbox_y2", bbox.y2, ParameterType.GetOrPost);
+            try
+            {
+                client.ExecuteAsync(request, response =>
+                    {
+                        if (response.ResponseStatus == ResponseStatus.Completed)
+                        {
+                            //Do nothing
+                        }
+                    });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
         }
 
         void _listener_PinchCompleted(object sender, PinchGestureEventArgs e)

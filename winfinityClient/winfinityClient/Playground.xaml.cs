@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
@@ -20,6 +21,8 @@ namespace winfinityClient
         UserCreate _myId;
         RoomAddUser _myRoom;
         BitmapImage _targetImage;
+        DispatcherTimer _timer;
+        EventResult _result;
 
         Point _center;
 
@@ -28,13 +31,66 @@ namespace winfinityClient
             InitializeComponent();
             TransitionMod.UseTurnstileTransition(this);
             _center = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
-            
+            _timer = new DispatcherTimer();
+            _timer.Interval = new TimeSpan(0, 0, 10);
+            _timer.Tick += _timer_Tick;
+        }
+
+        void _timer_Tick(object sender, EventArgs e)
+        {
+            RestClient client = new RestClient(UriMod.EventUri);
+            RestRequest request = new RestRequest();
+            request.Method = Method.GET;
+            request.AddParameter("room_id", _myRoom.data.room_id, ParameterType.GetOrPost);
+            request.AddParameter("user_key", _myId.data.key, ParameterType.GetOrPost);
+            try
+            {
+                client.ExecuteAsync(request, response =>
+                {
+                    if (response.ResponseStatus == ResponseStatus.Completed)
+                    {
+                        _result = JsonConvert.DeserializeObject<EventResult>(response.Content);
+                        moveImage(_result.data);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+        }
+
+        private void moveImage(BoundBox box)
+        {
+            CompositeTransform old = ImageField.RenderTransform as CompositeTransform;
+            var translate = new CompositeTransform
+            {
+                TranslateX = (box.x2 - box.x1) * box.x1 / ScreenSizeMod.XPixels,
+                TranslateY = (box.y2 - box.y1) * box.y1 / ScreenSizeMod.YPixels
+            };
+
+            ImageField.RenderTransform = ComposeScaleTranslate(old, translate);
+        }
+
+        private static CompositeTransform ComposeScaleTranslate(CompositeTransform fst, CompositeTransform snd)
+        {
+            // See http://stackoverflow.com/a/19439099/388010 on why this works
+            return new CompositeTransform
+            {
+                ScaleX = fst.ScaleX * snd.ScaleX,
+                ScaleY = fst.ScaleY * snd.ScaleY,
+                CenterX = fst.CenterX,
+                CenterY = fst.CenterY,
+                TranslateX = snd.TranslateX + snd.ScaleX * fst.TranslateX + (snd.ScaleX - 1) * (fst.CenterX - snd.CenterX),
+                TranslateY = snd.TranslateY + snd.ScaleY * fst.TranslateY + (snd.ScaleY - 1) * (fst.CenterY - snd.CenterY),
+            };
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            //_myId = (UserCreate)PhoneApplicationService.Current.State["MyID"];
-            //GetBaseProps();
+            _myId = (UserCreate)PhoneApplicationService.Current.State["MyID"];
+            GetBaseProps();
         }
 
         private void GetBaseProps()
@@ -52,12 +108,13 @@ namespace winfinityClient
                         Dispatcher.BeginInvoke(() =>
                         {
                             _targetImage = new BitmapImage(new Uri(_myId.data.rooms[0].shared_file, UriKind.Absolute));
-                            //BehaviorRoot.CurrentID = _myId;
-                            //BehaviorRoot.CurrentRoom = _myRoom;
+                            BehaviorRoot.CurrentID = _myId;
+                            BehaviorRoot.CurrentRoom = _myRoom;
                             if (_myId.data.position == 0)
                                 ImageField.Source = _targetImage;
-                            //BehaviorRoot.ImgHeight = _targetImage.PixelHeight;
-                            //BehaviorRoot.ImgWidth = _targetImage.PixelWidth;
+                            BehaviorRoot.ImgHeight = _targetImage.PixelHeight;
+                            BehaviorRoot.ImgWidth = _targetImage.PixelWidth;
+                            _timer.Start();
                         });
                     }
                 });
@@ -68,8 +125,6 @@ namespace winfinityClient
                 throw;
             }
         }
-
-
 
     }
 }

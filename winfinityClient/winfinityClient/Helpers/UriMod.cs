@@ -10,5 +10,6 @@ namespace winfinityClient.Helpers
     {
         public static string RoomUri = "http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/";
         public static string UserUri = "http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser/";
+        public static string EventUri = "http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/event/";
     }
 }

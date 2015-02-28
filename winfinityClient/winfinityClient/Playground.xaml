@@ -18,9 +18,9 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Image x:Name="ImageField" Stretch="Uniform" Source="Assets/test.jpg">
+        <Image x:Name="ImageField" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" Source="Assets/test.jpg">
             <i:Interaction.Behaviors>
-                <helper:PanAndZoomBehavior x:Name="BehaviorMod" MaxZoom="5"/>
+                <helper:PanAndZoomBehavior x:Name="BehaviorRoot" MaxZoom="5"/>
             </i:Interaction.Behaviors>
         </Image>
     </Grid>

@@ -9,17 +9,17 @@ namespace winfinityClient.Helpers
 {
     class BoundBox
     {
-        public double X1;
-        public double X2;
-        public double Y1;
-        public double Y2;
+        public double x1;
+        public double x2;
+        public double y1;
+        public double y2;
 
         public void Pan(double cx, double cy)
         {
-            X1 += cx;
-            X2 += cx;
-            Y1 += cy;
-            Y2 += cy;
+            x1 += cx;
+            x2 += cx;
+            y1 += cy;
+            y2 += cy;
         }
     }
 }
