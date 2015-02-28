@@ -27,9 +27,15 @@ class TempUser(models.Model):
     size = models.ForeignKey(Size, null=True, blank=True, related_name='tempuser')
     date_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.key)
+
 class Room(models.Model):
     """
         A room where multiple tempusers are connected
     """
     user = models.ManyToManyField(TempUser, null=True, blank=True, related_name='room')
     date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id)
