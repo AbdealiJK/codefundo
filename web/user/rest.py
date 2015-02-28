@@ -37,7 +37,7 @@ class TempUserViewSet(viewsets.ViewSet):
             if user == None:
                 return Response(viewset_response(
                     "We could not find any such user", {}))
-            user_data = UserSerializer(user).data
+            user_data = TempUserSerializer(user).data
             return Response(viewset_response("done", user_data))
 
     def create(self, request):
