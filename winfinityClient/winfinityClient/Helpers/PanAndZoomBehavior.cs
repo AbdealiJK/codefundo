@@ -32,16 +32,16 @@ namespace winfinityClient.Helpers
             if (isWidthFit)
             {
                 bbox.X1 = 0;
-                bbox.X2 = ScreenSizeMod.XPixels;
+                bbox.X2 = ImgWidth;
                 bbox.Y1 = -(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 - ImgHeight / 2.0);
-                bbox.Y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 + ImgHeight);
+                bbox.Y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 + ImgHeight / 2.0);
             }
             else
             {
                 bbox.Y1 = 0;
-                bbox.Y2 = ScreenSizeMod.YPixels;
+                bbox.Y2 = ImgHeight;
                 bbox.X1 = -(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 - ImgWidth / 2.0);
-                bbox.X2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 + ImgWidth);
+                bbox.X2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 + ImgWidth / 2.0);
             }
         }
 
@@ -70,7 +70,7 @@ namespace winfinityClient.Helpers
             ImageCenter.X += e.HorizontalChange;
             ImageCenter.Y += e.VerticalChange;
             bbox.Pan(e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
-            //Send bbox to Ali
+            //Send bbox to server
         }
 
         void _listener_PinchCompleted(object sender, PinchGestureEventArgs e)
