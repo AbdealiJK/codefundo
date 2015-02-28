@@ -49,6 +49,7 @@ namespace winfinityClient
                                 DeviceUid.Text = _myID.data.key;
                             });
                         _isKeyObtained = true;
+                        PhoneApplicationService.Current.State["MyID"] = _myID;
                     }
                 });
             }
@@ -75,6 +76,11 @@ namespace winfinityClient
         private void RefreshUid_Tap(object sender, GestureEventArgs e)
         {
             CreateIdLocal();
+        }
+
+        private void JoinRoom_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Playground.xaml?ismaster=" + "false", UriKind.Relative));
         }
 
     }
