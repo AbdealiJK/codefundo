@@ -30,15 +30,9 @@ namespace winfinityClient
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            //Get UIDS
-            //WebClient keyClient = new WebClient();
-            //keyClient.DownloadStringCompleted += keyClient_DownloadStringCompleted;
-            //if (!_isKeyObtained)
-            //    keyClient.DownloadStringAsync(new Uri("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser", UriKind.Absolute));
             RestClient myClient = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser/");
-            RestRequest postRequest = new RestRequest();
-            postRequest.Method = Method.POST;
-            postRequest.RequestFormat = DataFormat.Json;
+            RestRequest postRequest = new RestRequest {Method = Method.POST, RequestFormat = DataFormat.Json};
+            postRequest.AddQueryParameter("type", "create");
             try
             {
                 myClient.ExecuteAsync(postRequest, postResponse =>

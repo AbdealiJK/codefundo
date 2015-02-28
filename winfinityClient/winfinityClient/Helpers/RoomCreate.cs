@@ -11,22 +11,16 @@ namespace winfinityClient.Helpers
         public string key { get; set; }
     }
 
-    public class Room
+    public class DataofRoom
     {
         public int room_id { get; set; }
         public List<User> users { get; set; }
     }
 
-    public class Datum
-    {
-        public string key { get; set; }
-        public List<Room> rooms { get; set; }
-    }
-
-    public class UserModel
+    public class RoomCreate
     {
         public int status { get; set; }
         public string message { get; set; }
-        public List<Datum> data { get; set; }
+        public DataofRoom data { get; set; }
     }
 }
