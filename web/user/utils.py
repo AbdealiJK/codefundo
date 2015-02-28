@@ -44,12 +44,15 @@ def calculate_room(room, user):
             bbox0.y1 = bbox1.y2
             bbox0.x1 = bbox1.x2 + int((bbox1.x2 - bbox1.x1) * 1.0/ size1.width * size0.width)
             bbox0.y1 = bbox1.y1
+        bbox0.save()
+        bbox1.save()
+        user0.save()
+        user1.save()
         rows = 2
         cols = 1
         landscape = True
         return
     elif room.configuration == 2: # 2_PORTRAIT_CONFIG
-    # Temp variables
         user0 = room.user.filter(position=0)
         user1 = room.user.filter(position=1)
         bbox1 = user1.bounding_box
@@ -66,6 +69,10 @@ def calculate_room(room, user):
             bbox0.y2 = bbox1.y2
             bbox0.x2 = bbox1.x1
             bbox0.x1 = bbox1.x1 + int((bbox1.x1 - bbox1.x2) * 1.0/ size1.width * size0.width)
+        bbox0.save()
+        bbox1.save()
+        user0.save()
+        user1.save()
         return
         rows = 1
         cols = 2
