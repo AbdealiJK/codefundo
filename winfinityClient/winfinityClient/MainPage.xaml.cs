@@ -17,7 +17,7 @@ namespace winfinityClient
     public partial class MainPage : PhoneApplicationPage
     {
         bool _isKeyObtained = false;
-        UserModel _myModel;
+        UserCreate _myID;
         // Constructor
         public MainPage()
         {
@@ -30,18 +30,29 @@ namespace winfinityClient
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            if (!_isKeyObtained)
+                CreateIdLocal();
+        }
+
+        private void CreateIdLocal()
+        {
             RestClient myClient = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser/");
-            RestRequest postRequest = new RestRequest {Method = Method.POST, RequestFormat = DataFormat.Json};
+            RestRequest postRequest = new RestRequest { Method = Method.POST, RequestFormat = DataFormat.Json };
             postRequest.AddQueryParameter("type", "create");
             try
             {
                 myClient.ExecuteAsync(postRequest, postResponse =>
+                {
+                    if (postResponse.ResponseStatus == ResponseStatus.Completed)
                     {
-                        if (postResponse.ResponseStatus == ResponseStatus.Completed)
-                        {
-                            
-                        }
-                    });
+                        _myID = JsonConvert.DeserializeObject<UserCreate>(postResponse.Content);
+                        Dispatcher.BeginInvoke(() =>
+                            {
+                                DeviceUid.Text = _myID.data.key;
+                            });
+                        _isKeyObtained = true;
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -50,39 +61,11 @@ namespace winfinityClient
             }
         }
 
-        void keyClient_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            if (e.Error != null)
-            {
-                Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("This is not your fault. Something to do with your internet. " + e.Error.Message, "Connectivity Error", MessageBoxButton.OK);
-                });
-            }
-            else
-            {
-                _myModel = new UserModel();
-                _myModel = JsonConvert.DeserializeObject<UserModel>(e.Result);
-                if (_myModel.message == "done")
-                {
-                    Dispatcher.BeginInvoke(() =>
-                    {
-                        DeviceUid.Text = _myModel.data[0].key;
-                    });
-                    _isKeyObtained = true;
-                }
-                else
-                {
-                    MessageBox.Show("The server has some issues", "Error", MessageBoxButton.OK);
-                }
-            }
-        }
-
         private void CreateRoom_Click(object sender, RoutedEventArgs e)
         {
-            if (_myModel != null)
+            if (_myID != null)
             {
-                PhoneApplicationService.Current.State["MyUserModel"] = _myModel;
+                PhoneApplicationService.Current.State["MyID"] = _myID;
                 NavigationService.Navigate(new Uri("/createroom.xaml", UriKind.Relative));
             }
             else
@@ -93,9 +76,7 @@ namespace winfinityClient
 
         private void RefreshUid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            WebClient keyClient = new WebClient();
-            keyClient.DownloadStringCompleted += keyClient_DownloadStringCompleted;
-            keyClient.DownloadStringAsync(new Uri("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser", UriKind.Absolute));
+            CreateIdLocal();
         }
 
     }

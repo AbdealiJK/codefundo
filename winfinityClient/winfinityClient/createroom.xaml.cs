@@ -18,7 +18,7 @@ namespace winfinityClient
     {
         string[] _deviceIdList;
         int _noDevices;
-        UserModel _myModel;
+        UserCreate _myID;
 
         public createroom()
         {
@@ -40,8 +40,8 @@ namespace winfinityClient
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            _myModel = (UserModel)PhoneApplicationService.Current.State["MyUserModel"];
-            Device1.Content = _myModel.data[0].key;
+            _myID = (UserCreate)PhoneApplicationService.Current.State["MyID"];
+            Device1.Content = _myID.data.key;
         }
 
         private void TwoDevice_Click(object sender, RoutedEventArgs e)
