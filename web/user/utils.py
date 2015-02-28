@@ -46,9 +46,27 @@ def calculate_room(room, user):
             bbox0.y1 = bbox1.y1
         rows = 2
         cols = 1
-        landscape = False
+        landscape = True
         return
     elif room.configuration == 2: # 2_PORTRAIT_CONFIG
+    # Temp variables
+        user0 = room.user.filter(position=0)
+        user1 = room.user.filter(position=1)
+        bbox1 = user1.bounding_box
+        bbox0 = user0.bounding_box
+        size1 = user1.size
+        size0 = user0.size
+        if user.position == 0: # Left screen
+            bbox1.y1 = bbox0.y1
+            bbox1.y2 = bbox0.y2
+            bbox1.x1 = bbox0.x2
+            bbox1.x2 = bbox0.x2 + int((bbox0.x2 - bbox0.x1) * 1.0/ size0.width * size1.width)
+        elif user.position == 1: # Bottom screen
+            bbox0.y1 = bbox1.y1
+            bbox0.y2 = bbox1.y2
+            bbox0.x2 = bbox1.x1
+            bbox0.x1 = bbox1.x1 + int((bbox1.x1 - bbox1.x2) * 1.0/ size1.width * size0.width)
+        return
         rows = 1
         cols = 2
         landscape = False
@@ -124,7 +142,7 @@ def calc_doublet(user0, user1, master, landscape, leftright):
     elif master == 1 and landscape and leftright:
         bbox0.x1 = bbox1.x1
         bbox0.x2 = bbox1.x2
-        bbox0.y1 = bbox1.y1 + int((bbox1.y1 - bbox1.y2) * 1.0/ size0.width * size1.width)
+        bbox0.y1 = bbox1.y1 + int((bbox1.y1 - bbox1.y2) * 1.0/ size1.width * size0.width)
         bbox0.y2 = bbox1.y1
     elif master == 0 and not landscape and leftright:
         bbox1.y1 = bbox0.y1
@@ -134,7 +152,7 @@ def calc_doublet(user0, user1, master, landscape, leftright):
     elif master == 1 and not landscape and leftright:
         bbox0.y1 = bbox1.y1
         bbox0.y2 = bbox1.y2
-        bbox0.x1 = bbox1.x1 + int((bbox1.x1 - bbox1.x2) * 1.0/ size0.width * size1.width)
+        bbox0.x1 = bbox1.x1 + int((bbox1.x1 - bbox1.x2) * 1.0/ size1.width * size0.width)
         bbox0.x2 = bbox1.x1
     elif master == 0 and landscape and not leftright:
         bbox1.y1 = bbox0.y1
@@ -145,7 +163,7 @@ def calc_doublet(user0, user1, master, landscape, leftright):
         bbox0.y1 = bbox1.y1
         bbox0.y2 = bbox1.y2
         bbox0.x1 = bbox1.x2
-        bbox0.x2 = bbox1.x2 + int((bbox1.x2 - bbox1.x1) * 1.0/ size0.width * size1.width)
+        bbox0.x2 = bbox1.x2 + int((bbox1.x2 - bbox1.x1) * 1.0/ size1.width * size0.width)
     elif master == 0 and not landscape and not leftright:
         bbox1.x1 = bbox0.x1
         bbox1.x2 = bbox0.x2
@@ -154,7 +172,7 @@ def calc_doublet(user0, user1, master, landscape, leftright):
     elif master == 1 and not landscape and not leftright:
         bbox0.x1 = bbox1.x1
         bbox0.x2 = bbox1.x2
-        bbox0.y1 = bbox1.y1 + int((bbox1.y1 - bbox1.y2) * 1.0/ size0.width * size1.width)
+        bbox0.y1 = bbox1.y1 + int((bbox1.y1 - bbox1.y2) * 1.0/ size1.width * size0.width)
         bbox0.y2 = bbox1.y1
     bbox0.save()
     bbox1.save()
