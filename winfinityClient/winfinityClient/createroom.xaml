@@ -36,7 +36,7 @@
                     <Button x:Name="FourDevice" Content="4 Device" Click="FourDevice_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
                 <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0" />
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel Margin="0,30,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="Device1" Content="Device 1" Background="Green" Click="Device1_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                     <Button x:Name="Device2" Content="Device 2" Click="Device2_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
@@ -44,7 +44,8 @@
                     <Button x:Name="Device3" Content="Device 3" Click="Device3_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                     <Button x:Name="Device4" Content="Device 4" Click="Device4_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,0" />
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0">
                     <Button x:Name="DoneSetup" Content="Connect" Click="DoneSetup_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                     <Button x:Name="ImageUpload" Content="Send Image" Click="ImageUpload_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
