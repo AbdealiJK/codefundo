@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using RestSharp;
 using winfinityClient.Helpers;
-using winfinityClient.Resources;
+using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace winfinityClient
 {
@@ -36,9 +32,11 @@ namespace winfinityClient
 
         private void CreateIdLocal()
         {
-            RestClient myClient = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/tempuser/");
+            RestClient myClient = new RestClient(UriMod.UserUri);
             RestRequest postRequest = new RestRequest { Method = Method.POST, RequestFormat = DataFormat.Json };
-            postRequest.AddParameter("type", "create",ParameterType.GetOrPost);
+            postRequest.AddParameter("type", "create", ParameterType.GetOrPost);
+            postRequest.AddParameter("size_x", ScreenSizeMod.XInch, ParameterType.GetOrPost);
+            postRequest.AddParameter("size_y", ScreenSizeMod.YInch, ParameterType.GetOrPost);
             try
             {
                 myClient.ExecuteAsync(postRequest, postResponse =>
@@ -74,7 +72,7 @@ namespace winfinityClient
             }
         }
 
-        private void RefreshUid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void RefreshUid_Tap(object sender, GestureEventArgs e)
         {
             CreateIdLocal();
         }
