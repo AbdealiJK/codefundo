@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'django_extensions',
     'annoying',
+    'user',
+    'dash',
 )
 
 MIDDLEWARE_CLASSES = (
