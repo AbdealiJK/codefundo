@@ -16,7 +16,10 @@ namespace winfinityClient
     // ReSharper disable once InconsistentNaming
     public partial class createroom : PhoneApplicationPage
     {
-        List<string> _deviceIdList;
+        string[] _deviceIdList;
+        int _noDevices;
+        UserModel _myModel;
+
         public createroom()
         {
             InitializeComponent();
@@ -25,14 +28,28 @@ namespace winfinityClient
             TiltEffect.TiltableItems.Add(typeof(Button));
             TransitionMod.UseTurnstileTransition(this);
             MessageBox.Show("Tap on device to assign UID to them", "Tip", MessageBoxButton.OK);
-            _deviceIdList = new List<string>(4);
+            {
+                _deviceIdList = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    _deviceIdList[i] = string.Empty;
+                }
+            }
+            _noDevices = 4;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            _myModel = (UserModel)PhoneApplicationService.Current.State["MyUserModel"];
+            Device1.Content = _myModel.data[0].key;
         }
 
         private void TwoDevice_Click(object sender, RoutedEventArgs e)
         {
             DevicePanelFour.Visibility = System.Windows.Visibility.Collapsed;
-            Device1.Height = 500;
-            Device2.Height = 500;
+            Device1.Height = 400;
+            Device2.Height = 400;
+            _noDevices = 2;
         }
 
         private void FourDevice_Click(object sender, RoutedEventArgs e)
@@ -40,6 +57,7 @@ namespace winfinityClient
             DevicePanelFour.Visibility = System.Windows.Visibility.Visible;
             Device1.Height = 200;
             Device2.Height = 200;
+            _noDevices = 4;
         }
 
         private void Device1_Click(object sender, RoutedEventArgs e)
@@ -51,8 +69,8 @@ namespace winfinityClient
         {
             InputPrompt input2 = new InputPrompt();
             input2.Completed += input2_Completed;
-            input2.Title = "Basic Input";
-            input2.Message = "I'm a basic input prompt";
+            input2.Title = "Setup device 2";
+            input2.Message = "Enter the UID of device 2";
             input2.Show();
         }
 
@@ -60,7 +78,8 @@ namespace winfinityClient
         {
             if (e.Result != string.Empty)
             {
-                _deviceIdList[2] = e.Result;
+                _deviceIdList[1] = e.Result;
+                Device2.Content = e.Result;
             }
         }
 
@@ -68,28 +87,55 @@ namespace winfinityClient
         {
             InputPrompt input3 = new InputPrompt();
             input3.Completed += input3_Completed;
-            input3.Title = "Basic Input";
-            input3.Message = "I'm a basic input prompt";
+            input3.Title = "Setup Device 3";
+            input3.Message = "Enter the UID of device 3";
             input3.Show();
         }
 
         void input3_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
-            throw new NotImplementedException();
+            if (e.Result != string.Empty)
+            {
+                _deviceIdList[2] = e.Result;
+                Device3.Content = e.Result;
+            }
         }
 
         private void Device4_Click(object sender, RoutedEventArgs e)
         {
             InputPrompt input4 = new InputPrompt();
             input4.Completed += input4_Completed;
-            input4.Title = "Basic Input";
-            input4.Message = "I'm a basic input prompt";
+            input4.Title = "Setup Device 4";
+            input4.Message = "Enter the UID of device 4";
             input4.Show();
         }
 
         void input4_Completed(object sender, PopUpEventArgs<string, PopUpResult> e)
         {
-            throw new NotImplementedException();
+            if (e.Result != string.Empty)
+            {
+                _deviceIdList[3] = e.Result;
+                Device4.Content = e.Result;
+            }
+        }
+
+        private void DoneSetup_Click(object sender, RoutedEventArgs e)
+        {
+            int nullCounter = 0;
+            for (int i = 0; i < _noDevices ; i++)
+            {
+                if (_deviceIdList[i] == string.Empty || _deviceIdList[i] == null)
+                    ++nullCounter;
+            }
+            if (nullCounter == 0)
+            {
+                //Navigate to image workarea
+                MessageBox.Show("Done");
+            }
+            else
+            {
+                MessageBox.Show("Enter Device IDs for all devices");
+            }
         }
     }
 }

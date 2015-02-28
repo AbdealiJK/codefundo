@@ -50,7 +50,10 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <TextBlock FontFamily="Segoe UI Light" FontSize="32" Text="My ID"/>
-                <TextBlock x:Name="DeviceUid" FontFamily="Segoe UI" FontSize="42" HorizontalAlignment="Center" Text="123456"/>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock x:Name="DeviceUid" VerticalAlignment="Center" FontFamily="Segoe UI" FontSize="42" HorizontalAlignment="Center" Text="123456"/>
+                    <Image x:Name="RefreshUid" Tap="RefreshUid_Tap" Margin="30,0,0,0" Source="Assets\refresh.png"/>
+                </StackPanel>
                 <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,20" />
                 <Button x:Name="CreateRoom" wptoolkit:TiltEffect.IsTiltEnabled="True" Click="CreateRoom_Click" Height="80" Width="250" Content="Create room"/>
             </StackPanel>
