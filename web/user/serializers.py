@@ -28,7 +28,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
 class TempUserSerializer(serializers.ModelSerializer):
     rooms = RoomSerializer(source="room", many=True)
-    size = SizeSerializer()
+    # size = SizeSerializer()
     # user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
