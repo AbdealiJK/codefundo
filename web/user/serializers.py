@@ -1,13 +1,12 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from user.models import TempUser, Room, Size
+from user.models import TempUser, Room, Size, BoundingBox
 
 
-class BoundingBox(serializers.Serializer):
-    x1 = serializers.IntegerField()
-    x2 = serializers.IntegerField()
-    y1 = serializers.IntegerField()
-    y2 = serializers.IntegerField()
+class BoundingBoxSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BoundingBox
+        # fields = ()
 
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:

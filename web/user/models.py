@@ -20,6 +20,18 @@ CONFIGURATION_CHOICES = (
     (4, '4_LANDSCAPE_CONFIG'),
 )
 
+class BoundingBox(models.Model):
+    x1 = models.IntegerField(default=0)
+    x2 = models.IntegerField(default=0)
+    y1 = models.IntegerField(default=0)
+    y2 = models.IntegerField(default=0)
+
+    def clone(self, b):
+        self.x1 = b.x1
+        self.x2 = b.x2
+        self.y1 = b.y1
+        self.y2 = b.y2
+
 class Size(models.Model):
     """
         The size class.
@@ -40,6 +52,7 @@ class TempUser(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     position = models.IntegerField(default=0)
+    bounding_box = models.ForeignKey(BoundingBox, null=True, blank=True, related_name='tempuser')
 
     def __str__(self):
         return str(self.key)

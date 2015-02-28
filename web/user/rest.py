@@ -8,8 +8,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from annoying.functions import get_object_or_None
-from user.models import TempUser, Room, Size, CONFIGURATION_CHOICES
-from user.serializers import TempUserSerializer, RoomSerializer, SizeSerializer
+from user.models import TempUser, Room, Size, BoundingBox, CONFIGURATION_CHOICES
+from user.serializers import TempUserSerializer, RoomSerializer, SizeSerializer, BoundingBoxSerializer
 from user.utils import *
 # Python
 import HTMLParser
@@ -74,8 +74,9 @@ class TempUserViewSet(viewsets.ViewSet):
                     return Response(viewset_response(
                         "Sorry, all our slots are full. Try again later",
                         {}))
-            # Create a user and save size and key
+            # Create a user and save size, bbox and key
             user = TempUser.objects.create(key=r)
+            user.bounding_box = BoundingBox.objects.create()
             user.size = Size.objects.create(width=_size_x, height=_size_y)
             user.save()
             user.size.save()
@@ -177,12 +178,28 @@ class RoomViewSet(viewsets.ViewSet):
             room.save()
             return Response(viewset_response("done", room_data))
 
-class SizeViewSet(viewsets.ViewSet):
-    """
-        Information about a specific room
-    """
+class EventViewSet(viewset.ViewSet):
     def list(self, request):
-        rooms = Room.objects.all()
-        rooms_data = RoomSerializer(rooms, many=True).data
-        return Response(viewset_response("done", rooms_data))
+        _room_id = request.POST.get('room_id', None)
+        _user_id = request.POST.get('user_id', None)
+        bbox = BoundingBox()
+
+
+
+        bbox_data = BoundingBoxSerializer(bbox).data
+        return Response(viewset_response("done", bbox_data))
+
+    def create(self, request):
+        _room_id = request.POST.get('room_id', None)
+        _user_id = request.POST.get('user_id', None)
+
+        _bbox_x1 = request.POST.get('bbox_x1', None)
+        _bbox_y1 = request.POST.get('bbox_y1', None)
+        _bbox_x2 = request.POST.get('bbox_x2', None)
+        _bbox_y2 = request.POST.get('bbox_y2', None)
+
+        bbox_data = BoundingBoxSerializer(bbox).data
+        return Response(viewset_response("done", bbox_data))
+
+
 
