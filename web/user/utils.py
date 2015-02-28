@@ -27,15 +27,23 @@ def calculate_room(room, user):
         # Here, there will be one phone on top and another phone at the
         # bottom. Both will be in landscape mode.
 
+        # Temp variables
+        user0 = room.user.filter(position=0)
+        user1 = room.user.filter(position=1)
+        bbox1 = bottom.bounding_box
+        bbox0 = user.bounding_box
+        size1 = bottom.size
+        size0 = user.size
         if user.position == 0: # Top screen
-            bottom = room.user.filter(position=1)
-            bbox1 = bottom.bounding_box
-            bbox0 = user.bounding_box
-            # Common edge
             bbox1.x2 = bbox0.x1
             bbox1.y2 = bbox0.y2
-            bbox1.x1 = bbox0.
-            bbox1.y1 = bbox0.
+            bbox1.x1 = int((bbox0.x1 - bbox0.x2) * 1.0/ size0.width * size1.width)
+            bbox1.y1 = bbox0.y1
+        elif user.position == 1: # Bottom screen
+            bbox0.x2 = bbox0.x1
+            bbox0.y2 = bbox0.y2
+            bbox0.x1 = int((bbox0.x1 - bbox0.x2) * 1.0/ size0.width * size1.width)
+            bbox0.y1 = bbox0.y1
         return
     elif room.configuration == 2: # 2_VERTICAL_CONFIG
         return

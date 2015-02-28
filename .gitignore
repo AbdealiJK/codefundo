@@ -260,3 +260,14 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+
+
+
+
+
+
+### Server info
+.htaccess
+django.fcgi
+restart.bash
