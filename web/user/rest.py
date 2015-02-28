@@ -182,8 +182,21 @@ class EventViewSet(viewset.ViewSet):
     def list(self, request):
         _room_id = request.POST.get('room_id', None)
         _user_key = request.POST.get('user_key', None)
-        bbox = BoundingBox()
 
+        # Check if given data exists
+        room = get_object_or_None(Room, id=_room_id)
+        if room == None:
+            return Response(viewset_response(
+                "We could not find any such room", {}))
+        user = get_object_or_None(TempUser, key=_user_key)
+        if user == None:
+            return Response(viewset_response(
+                "We could not find any such user", {}))
+        if room not in user.room.all():
+            return Response(viewset_response(
+                "The user is not in the given room", {}))
+
+        bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
         return Response(viewset_response("done", bbox_data))
 
@@ -215,6 +228,12 @@ class EventViewSet(viewset.ViewSet):
         user.bounding_box.y2 = _bbox_y2
         user.bounding_box.save()
         user.save()
+
+        # This handles all the computations needed and saves the required data 
+        # in TempUser models - it modifies the room, user, size tables
+        calculate_room(room)
+
+        bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
         return Response(viewset_response("done", bbox_data))
 

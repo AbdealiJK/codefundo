@@ -1,3 +1,4 @@
+from user.models import TempUser, Room, Size, BoundingBox, CONFIGURATION_CHOICES
 
 def viewset_response(message,data):
     temp={}
@@ -8,3 +9,6 @@ def viewset_response(message,data):
         temp['status']=1
         temp['message']='done'
     return temp
+
+def calculate_room(room):
+    print room
