@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:helper="clr-namespace:winfinityClient.Helpers"
     xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:wptoolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -17,11 +18,10 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Image x:Name="ImageField" Stretch="UniformToFill" Source="Assets/AlignmentGrid.png">
-            <!--<i:Interaction.Behaviors>
-                <helper:PanAndZoomBehavior x:Name="BehaviorRoot" MaxZoom="10"/>
-            </i:Interaction.Behaviors>-->
-            
+        <Image x:Name="ImageField" Stretch="Uniform" Source="Assets/test.jpg">
+            <i:Interaction.Behaviors>
+                <helper:PanAndZoomBehavior x:Name="BehaviorMod" MaxZoom="5"/>
+            </i:Interaction.Behaviors>
         </Image>
     </Grid>
 

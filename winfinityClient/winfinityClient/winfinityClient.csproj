@@ -97,6 +97,7 @@
     <Compile Include="createroom.xaml.cs">
       <DependentUpon>createroom.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\BoundBox.cs" />
     <Compile Include="Helpers\PanAndZoomBehavior.cs" />
     <Compile Include="Helpers\RoomAddUser.cs" />
     <Compile Include="Helpers\RoomCreate.cs" />
@@ -161,6 +162,7 @@
     <Content Include="Assets\SquareTile150x150.png" />
     <Content Include="Assets\SquareTile71x71.png" />
     <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\test.jpg" />
     <Content Include="Assets\WideLogo.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

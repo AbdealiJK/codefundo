@@ -17,10 +17,32 @@ namespace winfinityClient.Helpers
         //image dimension
         public double ImgWidth { get; set; }
         public double ImgHeight { get; set; }
+        public Point ImageCenter;
+        bool isWidthFit;
+        BoundBox bbox;
 
         public PanAndZoomBehavior()
         {
+            bbox = new BoundBox();
             MaxZoom = 10.0;
+            ImageCenter = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
+            ImgWidth = 800;
+            ImgHeight = 800;
+            isWidthFit = !((double)ImgHeight / ImgWidth > (double)ScreenSizeMod.YPixels / ScreenSizeMod.XPixels);
+            if (isWidthFit)
+            {
+                bbox.X1 = 0;
+                bbox.X2 = ScreenSizeMod.XPixels;
+                bbox.Y1 = -(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 - ImgHeight / 2.0);
+                bbox.Y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth / 2.0 + ImgHeight);
+            }
+            else
+            {
+                bbox.Y1 = 0;
+                bbox.Y2 = ScreenSizeMod.YPixels;
+                bbox.X1 = -(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 - ImgWidth / 2.0);
+                bbox.X2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight / 2.0 + ImgWidth);
+            }
         }
 
         /// <summary>
@@ -45,12 +67,15 @@ namespace winfinityClient.Helpers
 
         void _listener_DragCompleted(object sender, DragCompletedGestureEventArgs e)
         {
-            
+            ImageCenter.X += e.HorizontalChange;
+            ImageCenter.Y += e.VerticalChange;
+            bbox.Pan(e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
+            //Send bbox to Ali
         }
 
         void _listener_PinchCompleted(object sender, PinchGestureEventArgs e)
         {
-            
+
         }
 
         protected override void OnDetaching()
