@@ -12,6 +12,13 @@ from django.core.signing import TimestampSigner, BadSignature, SignatureExpired
 # Python
 import datetime
 
+CONFIGURATION_CHOICES = (
+    (0, 'NO_CONFIG'),
+    (1, '2_HORIZ_CONFIG'),
+    (2, '2_VERTICAL_CONFIG'),
+    (3, '4_TABLE_CONFIG'),
+)
+
 class Size(models.Model):
     """
         The size class
@@ -27,6 +34,8 @@ class TempUser(models.Model):
     size = models.ForeignKey(Size, null=True, blank=True, related_name='tempuser')
     date_created = models.DateTimeField(auto_now_add=True)
 
+    position = models.IntegerField(default=0)
+
     def __str__(self):
         return str(self.key)
 
@@ -38,6 +47,7 @@ class Room(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     shared_file = models.FileField(upload_to='/shared/', default='settings.MEDIA_ROOT/logo.jpg')
 
+    configuration = models.IntegerField(max_length=1, choices=CONFIGURATION_CHOICES, default=0)
     size = models.ForeignKey(Size, null=True, blank=True, related_name='room')
 
     def __str__(self):
