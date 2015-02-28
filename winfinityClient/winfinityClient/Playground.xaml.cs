@@ -8,21 +8,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using RestSharp;
 using winfinityClient.Helpers;
+using System.Threading.Tasks;
 
 namespace winfinityClient
 {
     public partial class Playground : PhoneApplicationPage
     {
         UserCreate _myId;
-        RoomAddUser _myRoom;
+        //RoomAddUser _myRoom;
         BitmapImage _targetImage;
         DispatcherTimer _timer;
         EventResult _result;
+        double ImgHeight;
+        double ImgWidth;
 
         Point _center;
 
@@ -41,7 +45,7 @@ namespace winfinityClient
             RestClient client = new RestClient(UriMod.EventUri);
             RestRequest request = new RestRequest();
             request.Method = Method.GET;
-            request.AddParameter("room_id", _myRoom.data.room_id, ParameterType.GetOrPost);
+            request.AddParameter("room_id", _myId.data.rooms[0].room_id, ParameterType.GetOrPost);
             request.AddParameter("user_key", _myId.data.key, ParameterType.GetOrPost);
             try
             {
@@ -50,6 +54,13 @@ namespace winfinityClient
                     if (response.ResponseStatus == ResponseStatus.Completed)
                     {
                         _result = JsonConvert.DeserializeObject<EventResult>(response.Content);
+                        Dispatcher.BeginInvoke(() =>
+                        {
+                            ToastPrompt toast = new ToastPrompt();
+                            toast.Message = "Polling complete " + _result.data.x1 + "," + _result.data.x2;
+                            toast.MillisecondsUntilHidden = 1000;
+                            toast.Show();
+                        });
                         moveImage(_result.data);
                     }
                 });
@@ -108,12 +119,21 @@ namespace winfinityClient
                         Dispatcher.BeginInvoke(() =>
                         {
                             _targetImage = new BitmapImage(new Uri(_myId.data.rooms[0].shared_file, UriKind.Absolute));
+                            _targetImage.CreateOptions = BitmapCreateOptions.BackgroundCreation;
+                            Task.Delay(2000);
                             BehaviorRoot.CurrentID = _myId;
-                            BehaviorRoot.CurrentRoom = _myRoom;
-                            if (_myId.data.position == 0)
-                                ImageField.Source = _targetImage;
-                            BehaviorRoot.ImgHeight = _targetImage.PixelHeight;
-                            BehaviorRoot.ImgWidth = _targetImage.PixelWidth;
+                            ImageField.Source = _targetImage;
+                            BehaviorRoot.ImgHeight = 2592;//_targetImage.PixelHeight;
+                            BehaviorRoot.ImgWidth = 1456;// _targetImage.PixelWidth;
+                            ImgWidth = 1456;//_targetImage.PixelWidth;
+                            ImgHeight = 2592; //_targetImage.PixelHeight;
+                            ToastPrompt toast = new ToastPrompt
+                            {
+                                Message = "Base props " + ImgHeight + " " + ImgWidth,
+                                MillisecondsUntilHidden = 1000
+                            };
+                            AdminRegister();
+                            toast.Show();
                             _timer.Start();
                         });
                     }
@@ -123,6 +143,60 @@ namespace winfinityClient
             {
                 MessageBox.Show(ex.Message);
                 throw;
+            }
+        }
+
+        private void AdminRegister()
+        {
+            BoundBox bbox = new BoundBox();
+            bool isWidthFit = !((double)ImgHeight / ImgWidth > (double)ScreenSizeMod.YPixels / ScreenSizeMod.XPixels);
+            if (isWidthFit)
+            {
+                bbox.x1 = 0;
+                bbox.x2 = ImgWidth;
+                bbox.y1 = 0;
+                bbox.y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth);
+            }
+            else
+            {
+                bbox.y1 = 0;
+                bbox.y2 = ImgHeight;
+                bbox.x1 = 0;
+                bbox.x2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight);
+            }
+
+            if (_myId.data.position == 0)
+            {
+                RestClient client = new RestClient(UriMod.EventUri);
+                RestRequest request = new RestRequest();
+                request.Method = Method.POST;
+                request.AddParameter("room_id", _myId.data.rooms[0].room_id, ParameterType.GetOrPost);
+                request.AddParameter("user_key", _myId.data.key, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y1", bbox.y1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y2", bbox.y2, ParameterType.GetOrPost);
+                try
+                {
+                    client.ExecuteAsync(request, response =>
+                    {
+                        if (response.ResponseStatus == ResponseStatus.Completed)
+                        {
+                            Dispatcher.BeginInvoke(() =>
+                            {
+                                ToastPrompt toast = new ToastPrompt();
+                                toast.Message = "Admin registered";
+                                toast.MillisecondsUntilHidden = 1000;
+                                toast.Show();
+                            });
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    throw;
+                }
             }
         }
 

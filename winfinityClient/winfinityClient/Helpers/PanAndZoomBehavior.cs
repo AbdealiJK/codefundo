@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
 using RestSharp;
 
@@ -15,7 +16,6 @@ namespace winfinityClient.Helpers
         private double _initialScale;
         private GestureListener _listener;
         public UserCreate CurrentID { get; set; }
-        public RoomAddUser CurrentRoom { get; set; }
         //image dimension
         public double ImgWidth { get; set; }
         public double ImgHeight { get; set; }
@@ -42,34 +42,6 @@ namespace winfinityClient.Helpers
                 bbox.y2 = ImgHeight;
                 bbox.x1 = 0;
                 bbox.x2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight);
-            }
-
-            if (CurrentID.data.position == 0)
-            {
-                RestClient client = new RestClient(UriMod.EventUri);
-                RestRequest request = new RestRequest();
-                request.Method = Method.POST;
-                request.AddParameter("room_id", CurrentRoom.data.room_id, ParameterType.GetOrPost);
-                request.AddParameter("user_key", CurrentID.data.key, ParameterType.GetOrPost);
-                request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
-                request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
-                request.AddParameter("bbox_y1", bbox.y1, ParameterType.GetOrPost);
-                request.AddParameter("bbox_y2", bbox.y2, ParameterType.GetOrPost);
-                try
-                {
-                    client.ExecuteAsync(request, response =>
-                    {
-                        if (response.ResponseStatus == ResponseStatus.Completed)
-                        {
-                            //Do nothing
-                        }
-                    });
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                    throw;
-                }
             }
         }
 
@@ -102,7 +74,7 @@ namespace winfinityClient.Helpers
             RestClient client = new RestClient(UriMod.EventUri);
             RestRequest request = new RestRequest();
             request.Method = Method.POST;
-            request.AddParameter("room_id", CurrentRoom.data.room_id, ParameterType.GetOrPost);
+            request.AddParameter("room_id", CurrentID.data.rooms[0].room_id, ParameterType.GetOrPost);
             request.AddParameter("user_key", CurrentID.data.key, ParameterType.GetOrPost);
             request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
             request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
@@ -114,7 +86,13 @@ namespace winfinityClient.Helpers
                     {
                         if (response.ResponseStatus == ResponseStatus.Completed)
                         {
-                            //Do nothing
+                            Dispatcher.BeginInvoke(() =>
+                            {
+                                ToastPrompt toast = new ToastPrompt();
+                                toast.Message = "Drag complete posted";
+                                toast.MillisecondsUntilHidden = 1000;
+                                toast.Show();
+                            });
                         }
                     });
             }
