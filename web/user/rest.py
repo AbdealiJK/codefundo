@@ -178,7 +178,7 @@ class RoomViewSet(viewsets.ViewSet):
             room.save()
             return Response(viewset_response("done", room_data))
 
-class EventViewSet(viewset.ViewSet):
+class EventViewSet(viewsets.ViewSet):
     def list(self, request):
         _room_id = request.POST.get('room_id', None)
         _user_key = request.POST.get('user_key', None)
