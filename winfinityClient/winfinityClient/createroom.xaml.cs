@@ -167,7 +167,7 @@ namespace winfinityClient
             }
 
             //upload image
-            RestClient client = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/");
+            RestClient client = new RestClient(UriMod.RoomUri);
             RestRequest request = new RestRequest { Method = Method.POST };
             request.AddParameter("type", "file", ParameterType.GetOrPost);
             request.AddParameter("room_id", _myRoom.data.room_id, ParameterType.GetOrPost);
@@ -179,6 +179,8 @@ namespace winfinityClient
                 {
                     if (response.ResponseStatus == ResponseStatus.Completed)
                     {
+                        _myWorkspace = JsonConvert.DeserializeObject<RoomAddUser>(response.Content);
+                        //show output
                         Dispatcher.BeginInvoke(() =>
                         {
                             ToastPrompt toast = new ToastPrompt
@@ -212,7 +214,7 @@ namespace winfinityClient
 
         private void CreateNewRoom()
         {
-            RestClient client = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/");
+            RestClient client = new RestClient(UriMod.RoomUri);
             RestRequest request = new RestRequest { Method = Method.POST };
             request.AddParameter("type", "create", ParameterType.GetOrPost);
             request.AddParameter("configuration", (_noDevices == 2) ? "1" : "4", ParameterType.GetOrPost);
@@ -250,7 +252,7 @@ namespace winfinityClient
 
         private void AddUserToRoom(string id, RoomCreate room, int position)
         {
-            RestClient client = new RestClient("http://cfi.iitm.ac.in/webops/hackathon/hybriddevs/api/room/");
+            RestClient client = new RestClient(UriMod.RoomUri);
             RestRequest request = new RestRequest { Method = Method.POST };
             request.AddParameter("type", "add", ParameterType.GetOrPost);
             request.AddParameter("room_id", room.data.room_id, ParameterType.GetOrPost);

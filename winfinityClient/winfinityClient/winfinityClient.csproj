@@ -99,8 +99,10 @@
     </Compile>
     <Compile Include="Helpers\RoomAddUser.cs" />
     <Compile Include="Helpers\RoomCreate.cs" />
+    <Compile Include="Helpers\ScreenSizeMod.cs" />
     <Compile Include="Helpers\StreamExtensions.cs" />
     <Compile Include="Helpers\TransitionMod.cs" />
+    <Compile Include="Helpers\UriMod.cs" />
     <Compile Include="Helpers\UserCreate.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
