@@ -27,7 +27,7 @@ class TempUserViewSet(viewsets.ViewSet):
     """
     def list(self, request):
         _key = request.POST.get('key', None)
-        if _id == None:
+        if _key == None:
             users = TempUser.objects.all()
             users_data = TempUserSerializer(users, many=True).data
             return Response(viewset_response("done", users_data))
@@ -44,18 +44,23 @@ class TempUserViewSet(viewsets.ViewSet):
         if _type == 'create':
             r = 0
             max_trials = 100
+
+            # Delete all old users
             expiry_date = datetime.datetime.now() + datetime.timedelta(minutes=60*12, days=0)
             TempUser.objects.filter(date_created__gte=expiry_date).delete()
 
-            while r < MIN_KEY and r > (MAX_KEY+1) and \
+            # Get a unique key
+            while r < MIN_KEY or r > (MAX_KEY+1) or \
                 get_object_or_None(TempUser, key=r) != None:
 
                 r = random.randint(MIN_KEY, MAX_KEY+1)
                 max_trials -= 1
                 if max_trials < 0:
                     return Response(viewset_response(
-                        "Sorry, all our slots are full. Try again later", {}))
+                        "Sorry, all our slots are full. Try again later",
+                        {}))
             user = TempUser.objects.create(key=r)
+            print user
             user_data = TempUserSerializer(user).data
             return Response(viewset_response("done", user_data))
         else:
