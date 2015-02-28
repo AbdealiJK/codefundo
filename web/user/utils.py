@@ -83,20 +83,20 @@ def calculate_recursive(room, master, rows, cols, users,
         calc_doublet(user0, user1, 0, landscape, False)
         dones[top] = True
     bottom = master + cols
-    if bottom < rows * cols not dones[bottom]:
+    if bottom < rows * cols and not dones[bottom]:
         user1 = user[master]
         user0 = user[bottom]
         calc_doublet(user0, user1, 1, landscape, False)
         dones[bottom] = True
 
     left = master - rows
-    if left >= 0 not dones[left]:
+    if left >= 0 and not dones[left]:
         user1 = user[master]
         user0 = user[left]
         calc_doublet(user0, user1, 0, landscape, True)
         dones[left] = True
     right = master + rows
-    if right < rows * cols not dones[right]:
+    if right < rows * cols and not dones[right]:
         user1 = user[right]
         user0 = user[master]
         calc_doublet(user0, user1, 1, landscape, True)
