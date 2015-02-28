@@ -238,7 +238,7 @@ namespace winfinityClient
             RestClient client = new RestClient(UriMod.RoomUri);
             RestRequest request = new RestRequest { Method = Method.POST };
             request.AddParameter("type", "create", ParameterType.GetOrPost);
-            request.AddParameter("configuration", (_noDevices == 2) ? "1" : "4", ParameterType.GetOrPost);
+            request.AddParameter("configuration", (_noDevices == 2) ? "2" : "3", ParameterType.GetOrPost);
             request.AddParameter("key", _myID.data.key, ParameterType.GetOrPost);
             try
             {

@@ -46,8 +46,8 @@
                 </StackPanel>
                 <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,0" />
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0">
-                    <Button x:Name="DoneSetup" Content="Connect" Click="DoneSetup_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
-                    <Button x:Name="ImageUpload" Content="Send Image" Click="ImageUpload_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="DoneSetup" IsEnabled="False" Content="Connect" Click="DoneSetup_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
+                    <Button x:Name="ImageUpload" IsEnabled="False" Content="Send Image" Click="ImageUpload_Click" Height="80" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
