@@ -7,21 +7,21 @@ class TempUserKeySerializer(serializers.ModelSerializer):
     # user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
-        fields = ('key', )
+        fields = ('key', 'position', )
 
 class RoomSerializer(serializers.ModelSerializer):
     users = TempUserKeySerializer(source="user", many=True)
     room_id = serializers.IntegerField(source="id")
     class Meta:
         model = Room
-        fields = ('room_id', 'users')
+        fields = ('room_id', 'users', 'configuration', )
 
 class TempUserSerializer(serializers.ModelSerializer):
     rooms = RoomSerializer(source="room", many=True)
     # user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
-        fields = ('key', 'rooms', )
+        fields = ('key', 'rooms', 'position', )
 
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
