@@ -36,6 +36,6 @@ class Room(models.Model):
     """
     user = models.ManyToManyField(TempUser, null=True, blank=True, related_name='room')
     date_created = models.DateTimeField(auto_now_add=True)
-
+    shared_file = models.FileField(upload_to='/shared/')
     def __str__(self):
         return str(self.id)

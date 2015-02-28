@@ -93,13 +93,17 @@ class RoomViewSet(viewsets.ViewSet):
         _type = request.POST.get('type', None)
         if _key == None:
             return Response(viewset_response(
-                "Your key is required to create a room", {}))
+                "Your key is required to edit a room", {}))
         user = get_object_or_None(TempUser, key=_key)
         if user == None:
             return Response(viewset_response(
                 "We could not find you! Try refreshing your key",
                 {}))
         if _type == "create":
+            # Delete all old users
+            expiry_date = datetime.datetime.now() + datetime.timedelta(minutes=60*12, days=0)
+            Room.objects.filter(date_created__gte=expiry_date).delete()
+
             room = Room.objects.create()
             room.user.add(user)
             room_data = RoomSerializer(room).data
@@ -118,6 +122,18 @@ class RoomViewSet(viewsets.ViewSet):
                     "We could not find the user to add", {}))
             room.user.add(new_user)
             room_data = RoomSerializer(room).data
+            return Response(viewset_response("done", room_data))
+        elif _type == "file":
+            _room_id = request.POST.get('room_id', None)
+            room = get_object_or_None(Room, id=_room_id)
+            if room == None:
+                return Response(viewset_response(
+                    "We could not find any such room", {}))
+            _file = request.FILES.get('file', None)
+            print _file
+            room.shared_file = _file
+            # TODO : rename file to avoid clashes
+            room.save()
             return Response(viewset_response("done", room_data))
 
 class SizeViewSet(viewsets.ViewSet):
