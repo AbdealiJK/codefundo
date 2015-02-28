@@ -32,8 +32,10 @@ class TempUserViewSet(viewsets.ViewSet):
     def create(self, request):
         r = 0
         max_trials = 100
-        TempUser.objects.filter(date_created)
-        while r < MIN_KEY and r > MAX_KEY+1 and
+        expiry_date = datetime.datetime.now() + datetime.timedelta(minutes=60*12, days=0)
+        TempUser.objects.filter(date_created__gte=expiry_date).delete()
+
+        while r < MIN_KEY and r > (MAX_KEY+1) and \
             get_object_or_None(TempUser, key=r) != None:
 
             r = random.randint(MIN_KEY, MAX_KEY+1)
