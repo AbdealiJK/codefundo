@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
@@ -59,6 +60,10 @@ namespace winfinityClient
             Device1.Height = 400;
             Device2.Height = 400;
             _noDevices = 2;
+            TwoDevice.Background = new SolidColorBrush((Color)Application.Current.Resources["PhoneAccentColor"]);
+            FourDevice.Background = new SolidColorBrush(Colors.Transparent);
+            if (isInputComplete())
+                DoneSetup.IsEnabled = true;
         }
 
         private void FourDevice_Click(object sender, RoutedEventArgs e)
@@ -67,6 +72,10 @@ namespace winfinityClient
             Device1.Height = 200;
             Device2.Height = 200;
             _noDevices = 4;
+            FourDevice.Background = new SolidColorBrush((Color)Application.Current.Resources["PhoneAccentColor"]);
+            TwoDevice.Background = new SolidColorBrush(Colors.Transparent);
+            if (isInputComplete())
+                DoneSetup.IsEnabled = true;
         }
 
         private void Device1_Click(object sender, RoutedEventArgs e)
@@ -88,8 +97,11 @@ namespace winfinityClient
         {
             if (e.Result != string.Empty)
             {
+                Device2.Background = new SolidColorBrush(Colors.Green);
                 _deviceIdList[1] = e.Result;
                 Device2.Content = e.Result;
+                if (isInputComplete())
+                    DoneSetup.IsEnabled = true;
             }
         }
 
@@ -107,8 +119,11 @@ namespace winfinityClient
         {
             if (e.Result != string.Empty)
             {
+                Device3.Background = new SolidColorBrush(Colors.Green);
                 _deviceIdList[2] = e.Result;
                 Device3.Content = e.Result;
+                if (isInputComplete())
+                    DoneSetup.IsEnabled = true;
             }
         }
 
@@ -126,9 +141,12 @@ namespace winfinityClient
         {
             if (e.Result != string.Empty)
             {
+                Device4.Background = new SolidColorBrush(Colors.Green);
                 _deviceIdList[3] = e.Result;
                 Device4.Content = e.Result;
             }
+            if (isInputComplete())
+                DoneSetup.IsEnabled = true;
         }
 
         private void DoneSetup_Click(object sender, RoutedEventArgs e)
@@ -244,6 +262,10 @@ namespace winfinityClient
                                 AddUserToRoom((string)Device4.Content, _myRoom, 3);
                                 break;
                         }
+                        Dispatcher.BeginInvoke(() =>
+                       {
+                           ImageUpload.IsEnabled = true;
+                       });
                     }
                 });
             }
@@ -293,6 +315,16 @@ namespace winfinityClient
             photoGet.ShowCamera = true;
             photoGet.Completed += photoGet_Completed;
             photoGet.Show();
+        }
+
+        private bool isInputComplete()
+        {
+            for (int i = 0; i < _noDevices; i++)
+            {
+                if (_deviceIdList[i] == string.Empty || _deviceIdList[i] == null)
+                    return false;
+            }
+            return true;
         }
     }
 }

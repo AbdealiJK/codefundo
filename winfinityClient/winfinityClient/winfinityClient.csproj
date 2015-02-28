@@ -97,6 +97,7 @@
     <Compile Include="createroom.xaml.cs">
       <DependentUpon>createroom.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PanAndZoomBehavior.cs" />
     <Compile Include="Helpers\RoomAddUser.cs" />
     <Compile Include="Helpers\RoomCreate.cs" />
     <Compile Include="Helpers\ScreenSizeMod.cs" />
@@ -204,6 +205,9 @@
     </Reference>
     <Reference Include="RestSharp.WindowsPhone">
       <HintPath>..\packages\RestSharp.105.0.1\lib\sl4-wp71\RestSharp.WindowsPhone.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=3.9.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expression.Blend.Sdk.1.0.2\lib\wp8\System.Windows.Interactivity.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
