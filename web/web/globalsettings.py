@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'annoying',
     'user',
-    'dash',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -115,8 +114,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-# Social auth
-MICROSOFT_CLIENT_ID = 'YOUR-APP-ID'
-MICROSOFT_CLIENT_SECRET = 'YOUR-APP-SECRET'
-SOCIAL_AUTH_TWITTER_KEY = 'YOUR-APP-KEY'
-SOCIAL_AUTH_TWITTER_SECRET = 'YOUR-APP-SECRET'
+# Rest api
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : (
+        'rest_framework.permissions.AllowAny',
+    )
+}

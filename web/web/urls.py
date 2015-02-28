@@ -7,15 +7,12 @@ from user import rest
 router = DefaultRouter()
 router.register(r'tempuser', rest.TempUserViewSet, base_name="tempuser")
 router.register(r'room', rest.RoomViewSet, base_name="room")
-router.register(r'size', rest.SizeViewSet, base_name="size")
 
 urlpatterns = patterns('',
     # Examples:
 
-	url(r'^$', 'dash.views.home', name='home'),
-    url(r'^admin/', include(admin.site.urls)),
+	url(r'^admin/', include(admin.site.urls)),
 	url(r'^user/', include('user.urls')),
-	url(r'^dash/', include('dash.urls')),
 	url('', include('social.apps.django_app.urls', namespace='social')),
 
 	url(r'^api/', include(router.urls)),
