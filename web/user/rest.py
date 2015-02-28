@@ -109,8 +109,8 @@ class RoomViewSet(viewsets.ViewSet):
             room = Room.objects.create()
             room.user.add(user)
 
-            all_configs = [CONFIGURATION_CHOICES[i][0] for i in xrange(len(CONFIGURATION_CHOICES))]
-            if _configuration not in all_configs:
+            all_configs = [str(CONFIGURATION_CHOICES[i][0]) for i in xrange(len(CONFIGURATION_CHOICES))]
+            if str(_configuration) not in all_configs:
                 return Response(viewset_response(
                     "The configuration specified is not valid",
                     {}))
