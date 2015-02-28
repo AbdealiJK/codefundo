@@ -181,23 +181,40 @@ class RoomViewSet(viewsets.ViewSet):
 class EventViewSet(viewset.ViewSet):
     def list(self, request):
         _room_id = request.POST.get('room_id', None)
-        _user_id = request.POST.get('user_id', None)
+        _user_key = request.POST.get('user_key', None)
         bbox = BoundingBox()
-
-
 
         bbox_data = BoundingBoxSerializer(bbox).data
         return Response(viewset_response("done", bbox_data))
 
     def create(self, request):
         _room_id = request.POST.get('room_id', None)
-        _user_id = request.POST.get('user_id', None)
+        _user_key = request.POST.get('user_key', None)
 
         _bbox_x1 = request.POST.get('bbox_x1', None)
         _bbox_y1 = request.POST.get('bbox_y1', None)
         _bbox_x2 = request.POST.get('bbox_x2', None)
         _bbox_y2 = request.POST.get('bbox_y2', None)
 
+        # Check if given data exists
+        room = get_object_or_None(Room, id=_room_id)
+        if room == None:
+            return Response(viewset_response(
+                "We could not find any such room", {}))
+        user = get_object_or_None(TempUser, key=_user_key)
+        if user == None:
+            return Response(viewset_response(
+                "We could not find any such user", {}))
+
+        if room not in user.room.all():
+            return Response(viewset_response(
+                "The user is not in the given room", {}))
+        user.bounding_box.x1 = _bbox_x1
+        user.bounding_box.x2 = _bbox_x2
+        user.bounding_box.y1 = _bbox_y1
+        user.bounding_box.y2 = _bbox_y2
+        user.bounding_box.save()
+        user.save()
         bbox_data = BoundingBoxSerializer(bbox).data
         return Response(viewset_response("done", bbox_data))
 

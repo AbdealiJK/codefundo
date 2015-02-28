@@ -8,6 +8,7 @@ from user import rest
 router = DefaultRouter()
 router.register(r'tempuser', rest.TempUserViewSet, base_name="tempuser")
 router.register(r'room', rest.RoomViewSet, base_name="room")
+router.register(r'event', rest.EventViewSet, base_name="event")
 
 urlpatterns = patterns('',
     # Examples:

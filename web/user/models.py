@@ -21,12 +21,16 @@ CONFIGURATION_CHOICES = (
 )
 
 class BoundingBox(models.Model):
+    """
+        A class to store the data about a rectangle
+        It is assumed the (x1, y1) is top left when phone is held in portrait mode
+    """
     x1 = models.IntegerField(default=0)
     x2 = models.IntegerField(default=0)
     y1 = models.IntegerField(default=0)
     y2 = models.IntegerField(default=0)
 
-    def clone(self, b):
+    def copy(self, b):
         self.x1 = b.x1
         self.x2 = b.x2
         self.y1 = b.y1
