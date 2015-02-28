@@ -4,10 +4,10 @@ from user.models import TempUser, Room, Size
 
 
 class TempUserKeySerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField(source='id')
+    # user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
-        fields = ('user_id', 'key')
+        fields = ('key', )
 
 class RoomSerializer(serializers.ModelSerializer):
     users = TempUserKeySerializer(source="user", many=True)
@@ -21,7 +21,7 @@ class TempUserSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='id')
     class Meta:
         model = TempUser
-        fields = ('user_id', 'key', 'rooms', )
+        fields = ('key', 'rooms', )
 
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
