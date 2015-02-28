@@ -57,6 +57,8 @@ target/
 # Settings
 web/web/settings.py
 
+# Database
+web/db.sqlite3
 
 
 

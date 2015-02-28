@@ -26,3 +26,9 @@ class TempUserSerializer(serializers.ModelSerializer):
 class SizeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Size
+
+class BoundingBox(serializers.Serializer):
+    x1 = serializers.IntegerField()
+    x2 = serializers.IntegerField()
+    y1 = serializers.IntegerField()
+    y2 = serializers.IntegerField()
