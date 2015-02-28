@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using winfinityClient.Helpers;
 using winfinityClient.Resources;
 
 namespace winfinityClient
@@ -17,9 +18,14 @@ namespace winfinityClient
         public MainPage()
         {
             InitializeComponent();
+            TiltEffect.TiltableItems.Add(typeof(Grid));
+            TiltEffect.TiltableItems.Add(typeof(Button));
+            TransitionMod.UseTurnstileTransition(this);
+        }
 
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+        private void CreateRoom_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/createroom.xaml", UriKind.Relative));
         }
 
         // Sample code for building a localized ApplicationBar
