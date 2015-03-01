@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using Windows.Networking.Proximity;
 using Windows.Phone.Speech.Recognition;
 using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
@@ -24,6 +26,7 @@ namespace winfinityClient
         UserCreate _myID;
         RoomCreate _myRoom;
         RoomAddUser _myWorkspace;
+        long Id2, Id3, Id4;
 
         public createroom()
         {
@@ -334,7 +337,7 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
-                    string result = res.RecognitionResult.Text.Replace('.','\0');
+                    string result = res.RecognitionResult.Text.Replace('.', '\0');
                     Device2.Background = new SolidColorBrush(Colors.Green);
                     _deviceIdList[1] = result;
                     Device2.Content = result;
@@ -355,7 +358,7 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
-                    string result = res.RecognitionResult.Text.Replace('.','\0');
+                    string result = res.RecognitionResult.Text.Replace('.', '\0');
                     Device3.Background = new SolidColorBrush(Colors.Green);
                     _deviceIdList[2] = result;
                     Device3.Content = result;
@@ -367,7 +370,7 @@ namespace winfinityClient
 
         private async void Device4_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-             SpeechRecognizerUI mic = new SpeechRecognizerUI();
+            SpeechRecognizerUI mic = new SpeechRecognizerUI();
             mic.Settings.ExampleText = "Hold your device near phone which creates the room";
             mic.Settings.ListenText = "Recognition active";
             mic.Settings.ShowConfirmation = true;
@@ -376,7 +379,7 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
-                    string result = res.RecognitionResult.Text.Replace('.','\0');
+                    string result = res.RecognitionResult.Text.Replace('.', '\0');
                     Device4.Background = new SolidColorBrush(Colors.Green);
                     _deviceIdList[3] = result;
                     Device4.Content = result;
@@ -385,5 +388,90 @@ namespace winfinityClient
                 }
             }
         }
+
+        private void NFC2_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (ProximityDevice.GetDefault() != null)
+            {
+                MessageBox.Show("NFC present");
+                ProximityDevice device = ProximityDevice.GetDefault();
+                Id2 = device.SubscribeForMessage("Windows.SampleMessageType", messageReceived2);
+            }
+            else
+            {
+                MessageBox.Show("Your phone has no NFC or NFC is disabled");
+            }
+        }
+
+        private void messageReceived2(ProximityDevice sender, ProximityMessage message)
+        {
+            string result = message.DataAsString;
+            if (result != string.Empty)
+            {
+                Device2.Background = new SolidColorBrush(Colors.Green);
+                _deviceIdList[1] = result;
+                Device2.Content = result;
+                if (isInputComplete())
+                    DoneSetup.IsEnabled = true;
+            }
+            (sender as ProximityDevice).StopSubscribingForMessage(Id2);
+        }
+
+        private void NFC3_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (ProximityDevice.GetDefault() != null)
+            {
+                MessageBox.Show("NFC present");
+                ProximityDevice device = ProximityDevice.GetDefault();
+                Id3 = device.SubscribeForMessage("Windows.SampleMessageType", messageReceived3);
+            }
+            else
+            {
+                MessageBox.Show("Your phone has no NFC or NFC is disabled");
+            }
+        }
+
+        private void messageReceived3(ProximityDevice sender, ProximityMessage message)
+        {
+            string result = message.DataAsString;
+            if (result != string.Empty)
+            {
+                Device3.Background = new SolidColorBrush(Colors.Green);
+                _deviceIdList[2] = result;
+                Device3.Content = result;
+                if (isInputComplete())
+                    DoneSetup.IsEnabled = true;
+            }
+            (sender as ProximityDevice).StopSubscribingForMessage(Id3);
+        }
+
+        private void NFC4_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (ProximityDevice.GetDefault() != null)
+            {
+                MessageBox.Show("NFC present");
+                ProximityDevice device = ProximityDevice.GetDefault();
+                Id4 = device.SubscribeForMessage("Windows.SampleMessageType", messageReceived4);
+            }
+            else
+            {
+                MessageBox.Show("Your phone has no NFC or NFC is disabled");
+            }
+        }
+
+        private void messageReceived4(ProximityDevice sender, ProximityMessage message)
+        {
+            string result = message.DataAsString;
+            if (result != string.Empty)
+            {
+                Device4.Background = new SolidColorBrush(Colors.Green);
+                _deviceIdList[3] = result;
+                Device4.Content = result;
+                if (isInputComplete())
+                    DoneSetup.IsEnabled = true;
+            }
+            (sender as ProximityDevice).StopSubscribingForMessage(Id4);
+        }
+
     }
 }

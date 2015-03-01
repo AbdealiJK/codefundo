@@ -45,6 +45,11 @@
                                 <ImageBrush ImageSource="Assets\microphone.png"/>
                             </Grid.Background>
                         </Grid>
+                        <Grid Name="NFC2" Tap="NFC2_Tap" Margin="0,0,20,20" wptoolkit:TiltEffect.IsTiltEnabled="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="50">
+                            <Grid.Background>
+                                <ImageBrush ImageSource="Assets\share.png"/>
+                            </Grid.Background>
+                        </Grid>
                     </Grid>
                 </StackPanel>
                 <StackPanel x:Name="DevicePanelFour" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -55,12 +60,22 @@
                                 <ImageBrush ImageSource="Assets\microphone.png"/>
                             </Grid.Background>
                         </Grid>
+                        <Grid Name="NFC3" Tap="NFC3_Tap" Margin="0,0,20,20" wptoolkit:TiltEffect.IsTiltEnabled="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="50">
+                            <Grid.Background>
+                                <ImageBrush ImageSource="Assets\share.png"/>
+                            </Grid.Background>
+                        </Grid>
                     </Grid>
                     <Grid>
                         <Button x:Name="Device4" Content="Device 4" Click="Device4_Click" Height="200" Width="200" wptoolkit:TiltEffect.IsTiltEnabled="True"/>
                         <Grid Tap="Device4_DoubleTap" Margin="0,20,20,0" wptoolkit:TiltEffect.IsTiltEnabled="True" HorizontalAlignment="Right" VerticalAlignment="Top" Height="50" Width="50">
                             <Grid.Background>
                                 <ImageBrush ImageSource="Assets\microphone.png"/>
+                            </Grid.Background>
+                        </Grid>
+                        <Grid Name="NFC4" Tap="NFC4_Tap" Margin="0,0,20,20" wptoolkit:TiltEffect.IsTiltEnabled="True" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="50" Width="50">
+                            <Grid.Background>
+                                <ImageBrush ImageSource="Assets\share.png"/>
                             </Grid.Background>
                         </Grid>
                     </Grid>

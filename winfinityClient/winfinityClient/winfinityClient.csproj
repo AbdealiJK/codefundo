@@ -159,7 +159,9 @@
     <Content Include="Assets\BadgeLogo.png" />
     <Content Include="Assets\Logo.png" />
     <Content Include="Assets\microphone.png" />
+    <Content Include="Assets\nfc.png" />
     <Content Include="Assets\refresh.png" />
+    <Content Include="Assets\share.png" />
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="Assets\SquareTile150x150.png" />
     <Content Include="Assets\SquareTile71x71.png" />

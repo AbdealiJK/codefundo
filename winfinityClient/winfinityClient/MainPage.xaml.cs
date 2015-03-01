@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using Windows.Networking.Proximity;
+using Windows.Phone.Speech.Synthesis;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using RestSharp;
 using winfinityClient.Helpers;
-using Windows.Phone.Speech;
-using Windows.Phone.Speech.Synthesis;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace winfinityClient
@@ -16,6 +16,7 @@ namespace winfinityClient
     {
         bool _isKeyObtained = false;
         UserCreate _myID;
+        long nfcId;
         // Constructor
         public MainPage()
         {
@@ -24,6 +25,15 @@ namespace winfinityClient
             TiltEffect.TiltableItems.Add(typeof(Button));
             TransitionMod.UseTurnstileTransition(this);
             this.Loaded += MainPage_Loaded;
+        }
+
+        protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            ProximityDevice device = ProximityDevice.GetDefault();
+            if (device != null && nfcId != 0)
+            {
+                device.StopPublishingMessage(nfcId);
+            }
         }
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -96,6 +106,16 @@ namespace winfinityClient
                 stringtospeak += " ";
             }
             synth.SpeakTextAsync(stringtospeak);
+        }
+
+        private void NFCSend_Click(object sender, RoutedEventArgs e)
+        {
+            ProximityDevice device = ProximityDevice.GetDefault();
+            // Make sure NFC is supported
+            if (device != null)
+            {
+                nfcId = device.PublishMessage("Windows.SampleMessageType", _myID.data.key);
+            }
         }
 
     }
