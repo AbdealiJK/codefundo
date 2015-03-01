@@ -90,12 +90,13 @@ namespace winfinityClient
             {
                 BehaviorRoot.hasfirstbox = true;
                 BehaviorRoot.firstbox = box;
-                if (_myId.data.position != 0)
-                    BehaviorRoot.bbox.Pan(box.x1, box.y1);
+                //if (_myId.data.position != 0)
+                //    BehaviorRoot.bbox.Pan(box.x1, box.y1);
             }
+            BehaviorRoot.bbox = box;
             CompositeTransform old = ImageField.RenderTransform as CompositeTransform;
             double MoveX = -(box.x1) / (box.x2 - box.x1) * ScreenSizeMod.XPixels;
-            double MoveY = -(box.y1) / (box.y2 - box.y1) * ScreenSizeMod.YPixels;
+            double MoveY = (box.y1) / (box.y2 - box.y1) * ScreenSizeMod.YPixels;
             old.TranslateX = MoveX;
             old.TranslateY = MoveY;
             ImageField.RenderTransform = old;

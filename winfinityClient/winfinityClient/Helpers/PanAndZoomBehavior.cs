@@ -75,7 +75,7 @@ namespace winfinityClient.Helpers
         {
             ImageCenter.X += e.HorizontalChange;
             ImageCenter.Y += e.VerticalChange;
-            bbox.Pan(-e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, -e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
+            bbox.Pan(-e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
             
             //Send bbox to server
             RestClient client = new RestClient(UriMod.EventUri);
