@@ -116,6 +116,10 @@ namespace winfinityClient
             {
                 nfcId = device.PublishMessage("Windows.SampleMessageType", _myID.data.key);
             }
+            else
+            {
+                MessageBox.Show("Buy a better phone next time, No NFC ;)");
+            }
         }
 
     }

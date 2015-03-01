@@ -408,11 +408,14 @@ namespace winfinityClient
             string result = message.DataAsString;
             if (result != string.Empty)
             {
-                Device2.Background = new SolidColorBrush(Colors.Green);
-                _deviceIdList[1] = result;
-                Device2.Content = result;
-                if (isInputComplete())
-                    DoneSetup.IsEnabled = true;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    Device2.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[1] = result;
+                    Device2.Content = result;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                });
             }
             (sender as ProximityDevice).StopSubscribingForMessage(Id2);
         }
@@ -436,11 +439,14 @@ namespace winfinityClient
             string result = message.DataAsString;
             if (result != string.Empty)
             {
-                Device3.Background = new SolidColorBrush(Colors.Green);
-                _deviceIdList[2] = result;
-                Device3.Content = result;
-                if (isInputComplete())
-                    DoneSetup.IsEnabled = true;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    Device3.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[2] = result;
+                    Device3.Content = result;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                });
             }
             (sender as ProximityDevice).StopSubscribingForMessage(Id3);
         }
@@ -464,11 +470,14 @@ namespace winfinityClient
             string result = message.DataAsString;
             if (result != string.Empty)
             {
-                Device4.Background = new SolidColorBrush(Colors.Green);
-                _deviceIdList[3] = result;
-                Device4.Content = result;
-                if (isInputComplete())
-                    DoneSetup.IsEnabled = true;
+                Dispatcher.BeginInvoke(() =>
+                {
+                    Device4.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[3] = result;
+                    Device4.Content = result;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                });
             }
             (sender as ProximityDevice).StopSubscribingForMessage(Id4);
         }
