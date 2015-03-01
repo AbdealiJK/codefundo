@@ -241,7 +241,30 @@ class EventViewSet(viewsets.ViewSet):
 
         # This handles all the computations needed and saves the required data
         # in TempUser models - it modifies the room, user, size tables
-        calculate_room(room, user)
+
+        # calculate_room(room, user)
+
+        if room.configuration == 2: # 2_PORTRAIT_CONFIG
+            user0 = room.user.filter(position=0)
+            user1 = room.user.filter(position=1)
+            bbox1 = user1.bounding_box
+            bbox0 = user0.bounding_box
+            size1 = user1.size
+            size0 = user0.size
+            if user.position == 0: # Left screen
+                bbox1.y1 = bbox0.y1
+                bbox1.y2 = bbox0.y2
+                bbox1.x1 = bbox0.x2
+                bbox1.x2 = bbox0.x2 + int((bbox0.x2 - bbox0.x1) * 1.0/ size0.width * size1.width)
+            elif user.position == 1: # Right screen
+                bbox0.y1 = bbox1.y1
+                bbox0.y2 = bbox1.y2
+                bbox0.x2 = bbox1.x1
+                bbox0.x1 = bbox1.x1 + int((bbox1.x1 - bbox1.x2) * 1.0/ size1.width * size0.width)
+            bbox0.save()
+            bbox1.save()
+            user0.save()
+            user1.save()
 
         with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
             for i in room.user.all():
