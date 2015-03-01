@@ -64,7 +64,7 @@ def calculate_room(room, user):
             bbox1.y2 = bbox0.y2
             bbox1.x1 = bbox0.x2
             bbox1.x2 = bbox0.x2 + int((bbox0.x2 - bbox0.x1) * 1.0/ size0.width * size1.width)
-        elif user.position == 1: # Bottom screen
+        elif user.position == 1: # Right screen
             bbox0.y1 = bbox1.y1
             bbox0.y2 = bbox1.y2
             bbox0.x2 = bbox1.x1
