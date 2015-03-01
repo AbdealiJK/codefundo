@@ -36,7 +36,7 @@ namespace winfinityClient
             TransitionMod.UseTurnstileTransition(this);
             _center = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
             _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(0, 0, 10);
+            _timer.Interval = new TimeSpan(0, 0, 4);
             _timer.Tick += _timer_Tick;
         }
 
@@ -61,7 +61,7 @@ namespace winfinityClient
                             toast.MillisecondsUntilHidden = 1000;
                             toast.Show();
                         });
-                        moveImage(_result.data);
+                        AltMoveImage(_result.data);
                     }
                 });
             }
@@ -82,6 +82,23 @@ namespace winfinityClient
             };
 
             ImageField.RenderTransform = ComposeScaleTranslate(old, translate);
+        }
+
+        private void AltMoveImage(BoundBox box)
+        {
+            if (!BehaviorRoot.hasfirstbox)
+            {
+                BehaviorRoot.hasfirstbox = true;
+                BehaviorRoot.firstbox = box;
+                if (_myId.data.position != 0)
+                    BehaviorRoot.bbox.Pan(box.x1, box.y1);
+            }
+            CompositeTransform old = ImageField.RenderTransform as CompositeTransform;
+            double MoveX = -(box.x1) / (box.x2 - box.x1) * ScreenSizeMod.XPixels;
+            double MoveY = -(box.y1) / (box.y2 - box.y1) * ScreenSizeMod.YPixels;
+            old.TranslateX = MoveX;
+            old.TranslateY = MoveY;
+            ImageField.RenderTransform = old;
         }
 
         private static CompositeTransform ComposeScaleTranslate(CompositeTransform fst, CompositeTransform snd)
@@ -148,21 +165,21 @@ namespace winfinityClient
 
         private void AdminRegister()
         {
-            BoundBox bbox = new BoundBox();
+            BoundBox box = new BoundBox();
             bool isWidthFit = !((double)ImgHeight / ImgWidth > (double)ScreenSizeMod.YPixels / ScreenSizeMod.XPixels);
             if (isWidthFit)
             {
-                bbox.x1 = 0;
-                bbox.x2 = ImgWidth;
-                bbox.y1 = 0;
-                bbox.y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth);
+                box.x1 = 0;
+                box.x2 = ImgWidth;
+                box.y1 = 0;
+                box.y2 = +(ScreenSizeMod.YPixels / ScreenSizeMod.XPixels * ImgWidth);
             }
             else
             {
-                bbox.y1 = 0;
-                bbox.y2 = ImgHeight;
-                bbox.x1 = 0;
-                bbox.x2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight);
+                box.y1 = 0;
+                box.y2 = ImgHeight;
+                box.x1 = 0;
+                box.x2 = +(ScreenSizeMod.XPixels / ScreenSizeMod.YPixels * ImgHeight);
             }
 
             if (_myId.data.position == 0)
@@ -172,10 +189,10 @@ namespace winfinityClient
                 request.Method = Method.POST;
                 request.AddParameter("room_id", _myId.data.rooms[0].room_id, ParameterType.GetOrPost);
                 request.AddParameter("user_key", _myId.data.key, ParameterType.GetOrPost);
-                request.AddParameter("bbox_x1", bbox.x1, ParameterType.GetOrPost);
-                request.AddParameter("bbox_x2", bbox.x2, ParameterType.GetOrPost);
-                request.AddParameter("bbox_y1", bbox.y1, ParameterType.GetOrPost);
-                request.AddParameter("bbox_y2", bbox.y2, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x1", box.x1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_x2", box.x2, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y1", box.y1, ParameterType.GetOrPost);
+                request.AddParameter("bbox_y2", box.y2, ParameterType.GetOrPost);
                 try
                 {
                     client.ExecuteAsync(request, response =>

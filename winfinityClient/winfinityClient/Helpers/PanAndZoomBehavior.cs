@@ -21,11 +21,17 @@ namespace winfinityClient.Helpers
         public double ImgHeight { get; set; }
         public Point ImageCenter;
         bool isWidthFit;
-        BoundBox bbox;
+        public BoundBox bbox;
+        public BoundBox firstbox;
+        public bool hasfirstbox;
 
         public PanAndZoomBehavior()
         {
             bbox = new BoundBox();
+            firstbox = new BoundBox();
+            hasfirstbox = false;
+            ImgWidth = 1456;//_targetImage.PixelWidth;
+            ImgHeight = 2592; //_targetImage.PixelHeight;
             MaxZoom = 10.0;
             ImageCenter = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
             isWidthFit = !((double)ImgHeight / ImgWidth > (double)ScreenSizeMod.YPixels / ScreenSizeMod.XPixels);
@@ -69,7 +75,8 @@ namespace winfinityClient.Helpers
         {
             ImageCenter.X += e.HorizontalChange;
             ImageCenter.Y += e.VerticalChange;
-            bbox.Pan(e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
+            bbox.Pan(-e.HorizontalChange / ScreenSizeMod.XPixels * ImgWidth, -e.VerticalChange / ScreenSizeMod.YPixels * ImgHeight);
+            
             //Send bbox to server
             RestClient client = new RestClient(UriMod.EventUri);
             RestRequest request = new RestRequest();

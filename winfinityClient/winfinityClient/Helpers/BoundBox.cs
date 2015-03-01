@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace winfinityClient.Helpers
 {
-    class BoundBox
+    public class BoundBox
     {
         public double x1;
         public double x2;
