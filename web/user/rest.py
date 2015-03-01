@@ -274,6 +274,8 @@ class EventViewSet(viewsets.ViewSet):
             bbox1.save()
             user0.save()
             user1.save()
+        elif room.configuration == 3: # 4_PORTRAIT_CONFIG
+            calculate_room(room, user)
 
         for i in room.user.all():
             logger(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")")

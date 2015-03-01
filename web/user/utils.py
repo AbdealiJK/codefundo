@@ -37,8 +37,8 @@ def calculate_room(room, user):
         return
     elif room.configuration == 1: # 2_LANDSCAPE_CONFIG
         # Temp variables
-        user0 = room.user.filter(position=0)
-        user1 = room.user.filter(position=1)
+        user0 = room.user.filter(position=0)[0]
+        user1 = room.user.filter(position=1)[0]
         bbox1 = user1.bounding_box
         bbox0 = user0.bounding_box
         size1 = user1.size
@@ -62,8 +62,8 @@ def calculate_room(room, user):
         landscape = True
         return
     elif room.configuration == 2: # 2_PORTRAIT_CONFIG
-        user0 = room.user.filter(position=0)
-        user1 = room.user.filter(position=1)
+        user0 = room.user.filter(position=0)[0]
+        user1 = room.user.filter(position=1)[0]
         bbox1 = user1.bounding_box
         bbox0 = user0.bounding_box
         size1 = user1.size
