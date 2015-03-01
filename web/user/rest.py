@@ -202,9 +202,10 @@ class EventViewSet(viewsets.ViewSet):
                 "The user is not in the given room", {}))
 
         with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
-            f.write(user.key + '@' + room.id + " : GET\n")
+            f.write(str(user.key) + '@' + str(room.id) + " : GET\n")
             for i in room.user.all():
-                f.write(i.key + '@' + room.id + " : box (" + i.bounding_box.x1 + ", " + i.bounding_box.y1 + ") . (" + i.bounding_box.x2 + ", " + i.bounding_box.y2 + ")\n")
+                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + 1") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
+            f.close()
 
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
@@ -241,7 +242,8 @@ class EventViewSet(viewsets.ViewSet):
         user.save()
 
         with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
-            f.write(user.key + '@' + room.id + " : POST (" + _bbox_x1 + ", " + _bbox_y1 + ") . (" + _bbox_x2 + ", " + _bbox_y2 + ")\n")
+            f.write(str(user.key) + '@' + str(room.id) + " : POST (" + str(_bbox_x1) + ", " + str(_bbox_y1) + ") . (" + str(_bbox_x2) + ", " + str(_bbox_y2) + ")\n")
+            f.close()
 
 
         # This handles all the computations needed and saves the required data
@@ -273,7 +275,8 @@ class EventViewSet(viewsets.ViewSet):
 
         with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
             for i in room.user.all():
-                f.write(i.key + '@' + room.id + " : box (" + i.bounding_box.x1 + ", " + i.bounding_box.y1 + ") . (" + i.bounding_box.x2 + ", " + i.bounding_box.y2 + ")\n")
+                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
+            f.close()
 
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
