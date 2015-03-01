@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using Windows.Phone.Speech.Recognition;
 using Coding4Fun.Toolkit.Controls;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -56,7 +52,7 @@ namespace winfinityClient
 
         private void TwoDevice_Click(object sender, RoutedEventArgs e)
         {
-            DevicePanelFour.Visibility = System.Windows.Visibility.Collapsed;
+            DevicePanelFour.Visibility = Visibility.Collapsed;
             Device1.Height = 400;
             Device2.Height = 400;
             _noDevices = 2;
@@ -68,7 +64,7 @@ namespace winfinityClient
 
         private void FourDevice_Click(object sender, RoutedEventArgs e)
         {
-            DevicePanelFour.Visibility = System.Windows.Visibility.Visible;
+            DevicePanelFour.Visibility = Visibility.Visible;
             Device1.Height = 200;
             Device2.Height = 200;
             _noDevices = 4;
@@ -325,6 +321,66 @@ namespace winfinityClient
                     return false;
             }
             return true;
+        }
+
+        private async void Device2_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SpeechRecognizerUI mic = new SpeechRecognizerUI();
+            mic.Settings.ExampleText = "Hold your device near phone which creates the room";
+            mic.Settings.ListenText = "Recognition active";
+            mic.Settings.ShowConfirmation = true;
+            SpeechRecognitionUIResult res = await mic.RecognizeWithUIAsync();
+            if (res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.Medium || res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.High)
+            {
+                if (res.RecognitionResult.Text != string.Empty)
+                {
+                    Device2.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[1] = res.RecognitionResult.Text;
+                    Device2.Content = res.RecognitionResult.Text;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                }
+            }
+        }
+
+        private async void Device3_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SpeechRecognizerUI mic = new SpeechRecognizerUI();
+            mic.Settings.ExampleText = "Hold your device near phone which creates the room";
+            mic.Settings.ListenText = "Recognition active";
+            mic.Settings.ShowConfirmation = true;
+            SpeechRecognitionUIResult res = await mic.RecognizeWithUIAsync();
+            if (res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.Medium || res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.High)
+            {
+                if (res.RecognitionResult.Text != string.Empty)
+                {
+                    Device3.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[2] = res.RecognitionResult.Text;
+                    Device3.Content = res.RecognitionResult.Text;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                }
+            }
+        }
+
+        private async void Device4_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            SpeechRecognizerUI mic = new SpeechRecognizerUI();
+            mic.Settings.ExampleText = "Hold your device near phone which creates the room";
+            mic.Settings.ListenText = "Recognition active";
+            mic.Settings.ShowConfirmation = true;
+            SpeechRecognitionUIResult res = await mic.RecognizeWithUIAsync();
+            if (res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.Medium || res.RecognitionResult.TextConfidence == SpeechRecognitionConfidence.High)
+            {
+                if (res.RecognitionResult.Text != string.Empty)
+                {
+                    Device4.Background = new SolidColorBrush(Colors.Green);
+                    _deviceIdList[3] = res.RecognitionResult.Text;
+                    Device4.Content = res.RecognitionResult.Text;
+                    if (isInputComplete())
+                        DoneSetup.IsEnabled = true;
+                }
+            }
         }
     }
 }
