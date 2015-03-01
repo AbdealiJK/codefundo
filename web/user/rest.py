@@ -201,6 +201,11 @@ class EventViewSet(viewsets.ViewSet):
             return Response(viewset_response(
                 "The user is not in the given room", {}))
 
+        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
+            f.write(user.key + '@' + room.id + " : GET\n")
+            for i in room.user.all():
+                f.write(i.key + '@' + room.id + " : box (" + i.bounding_box.x1 + ", " + i.bounding_box.y1 + ") . (" + i.bounding_box.x2 + ", " + i.bounding_box.y2 + ")\n")
+
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
         return Response(viewset_response("done", bbox_data))
