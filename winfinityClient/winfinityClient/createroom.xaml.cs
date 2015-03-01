@@ -323,7 +323,7 @@ namespace winfinityClient
             return true;
         }
 
-        private async void Device2_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void Device2_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SpeechRecognizerUI mic = new SpeechRecognizerUI();
             mic.Settings.ExampleText = "Hold your device near phone which creates the room";
@@ -334,16 +334,17 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
+                    string result = res.RecognitionResult.Text.Replace('.','\0');
                     Device2.Background = new SolidColorBrush(Colors.Green);
-                    _deviceIdList[1] = res.RecognitionResult.Text;
-                    Device2.Content = res.RecognitionResult.Text;
+                    _deviceIdList[1] = result;
+                    Device2.Content = result;
                     if (isInputComplete())
                         DoneSetup.IsEnabled = true;
                 }
             }
         }
 
-        private async void Device3_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void Device3_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             SpeechRecognizerUI mic = new SpeechRecognizerUI();
             mic.Settings.ExampleText = "Hold your device near phone which creates the room";
@@ -354,18 +355,19 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
+                    string result = res.RecognitionResult.Text.Replace('.','\0');
                     Device3.Background = new SolidColorBrush(Colors.Green);
-                    _deviceIdList[2] = res.RecognitionResult.Text;
-                    Device3.Content = res.RecognitionResult.Text;
+                    _deviceIdList[2] = result;
+                    Device3.Content = result;
                     if (isInputComplete())
                         DoneSetup.IsEnabled = true;
                 }
             }
         }
 
-        private async void Device4_Hold(object sender, System.Windows.Input.GestureEventArgs e)
+        private async void Device4_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            SpeechRecognizerUI mic = new SpeechRecognizerUI();
+             SpeechRecognizerUI mic = new SpeechRecognizerUI();
             mic.Settings.ExampleText = "Hold your device near phone which creates the room";
             mic.Settings.ListenText = "Recognition active";
             mic.Settings.ShowConfirmation = true;
@@ -374,9 +376,10 @@ namespace winfinityClient
             {
                 if (res.RecognitionResult.Text != string.Empty)
                 {
+                    string result = res.RecognitionResult.Text.Replace('.','\0');
                     Device4.Background = new SolidColorBrush(Colors.Green);
-                    _deviceIdList[3] = res.RecognitionResult.Text;
-                    Device4.Content = res.RecognitionResult.Text;
+                    _deviceIdList[3] = result;
+                    Device4.Content = result;
                     if (isInputComplete())
                         DoneSetup.IsEnabled = true;
                 }
