@@ -235,7 +235,7 @@ class EventViewSet(viewsets.ViewSet):
         user.bounding_box.save()
         user.save()
 
-        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'w') as f:
+        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
             f.write(user.key + '@' + room.id + " : POST (" + _bbox_x1 + ", " + _bbox_y1 + ") . (" + _bbox_x2 + ", " + _bbox_y2 + ")\n")
 
 
@@ -243,7 +243,7 @@ class EventViewSet(viewsets.ViewSet):
         # in TempUser models - it modifies the room, user, size tables
         calculate_room(room, user)
 
-        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'w') as f:
+        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
             for i in room.user.all():
                 f.write(i.key + '@' + room.id + " : box (" + i.bounding_box.x1 + ", " + i.bounding_box.y1 + ") . (" + i.bounding_box.x2 + ", " + i.bounding_box.y2 + ")\n")
 
