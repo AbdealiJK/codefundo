@@ -204,7 +204,7 @@ class EventViewSet(viewsets.ViewSet):
         with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
             f.write(str(user.key) + '@' + str(room.id) + " : GET\n")
             for i in room.user.all():
-                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + 1") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
+                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
             f.close()
 
         bbox = user.bounding_box
@@ -234,10 +234,14 @@ class EventViewSet(viewsets.ViewSet):
                 "The user is not in the given room", {}))
 
         # Save user information
-        user.bounding_box.x1 = _bbox_x1
-        user.bounding_box.x2 = _bbox_x2
-        user.bounding_box.y1 = _bbox_y1
-        user.bounding_box.y2 = _bbox_y2
+	if _bbox_x1 == None or _bbox_x2 == None or _bbox_y1 == None or _bbox_y2 == None:
+            return Response(viewset_response(
+                "We need bounding box data to process this", {}))
+		
+        user.bounding_box.x1 = float(_bbox_x1)
+        user.bounding_box.x2 = float(_bbox_x2)
+        user.bounding_box.y1 = float(_bbox_y1)
+        user.bounding_box.y2 = float(_bbox_y2)
         user.bounding_box.save()
         user.save()
 
@@ -252,10 +256,11 @@ class EventViewSet(viewsets.ViewSet):
         # calculate_room(room, user)
 
         if room.configuration == 2: # 2_PORTRAIT_CONFIG
-            user0 = room.user.filter(position=0)
-            user1 = room.user.filter(position=1)
+            user0 = room.user.filter(position=0)[0]
+            user1 = room.user.filter(position=1)[0]
             bbox1 = user1.bounding_box
             bbox0 = user0.bounding_box
+            # logger(str(user.key)  + " .. " + str(user0.key) + " : " + str(user0.bounding_box.x1) + "," + str(user0.bounding_box.y1) + "," + str(bbox0.x1) + "," + str(bbox0.x2))
             size1 = user1.size
             size0 = user0.size
             if user.position == 0: # Left screen

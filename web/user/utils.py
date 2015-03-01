@@ -1,4 +1,7 @@
 from user.models import TempUser, Room, Size, BoundingBox, CONFIGURATION_CHOICES
+from django.conf import settings
+import os
+
 
 def viewset_response(message,data):
     temp={}
@@ -9,6 +12,12 @@ def viewset_response(message,data):
         temp['status']=1
         temp['message']='done'
     return temp
+
+def logger(msg):
+    with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
+        f.write(str(msg) + "\n")
+        f.close()
+
 
 def calculate_room(room, user):
     """
