@@ -36,7 +36,7 @@ namespace winfinityClient
             TransitionMod.UseTurnstileTransition(this);
             _center = new Point(ScreenSizeMod.XPixels / 2.0, ScreenSizeMod.YPixels / 2.0);
             _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(0, 0, 4);
+            _timer.Interval = new TimeSpan(0, 0, 2);
             _timer.Tick += _timer_Tick;
         }
 
