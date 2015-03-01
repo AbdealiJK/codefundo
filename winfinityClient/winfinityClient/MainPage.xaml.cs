@@ -6,6 +6,8 @@ using Microsoft.Phone.Shell;
 using Newtonsoft.Json;
 using RestSharp;
 using winfinityClient.Helpers;
+using Windows.Phone.Speech;
+using Windows.Phone.Speech.Synthesis;
 using GestureEventArgs = System.Windows.Input.GestureEventArgs;
 
 namespace winfinityClient
@@ -81,6 +83,19 @@ namespace winfinityClient
         private void JoinRoom_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Playground.xaml?ismaster=" + "false", UriKind.Relative));
+        }
+
+        private void Speak_Click(object sender, RoutedEventArgs e)
+        {
+            SpeechSynthesizer synth = new SpeechSynthesizer();
+            char[] tospeak = _myID.data.key.ToCharArray(0, 6);
+            string stringtospeak = "";
+            for (int i = 0; i < 6; ++i)
+            {
+                stringtospeak += tospeak[i];
+                stringtospeak += " ";
+            }
+            synth.SpeakTextAsync(stringtospeak);
         }
 
     }

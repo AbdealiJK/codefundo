@@ -57,6 +57,8 @@
                 <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,20" />
                 <Button x:Name="CreateRoom" wptoolkit:TiltEffect.IsTiltEnabled="True" Click="CreateRoom_Click" Height="80" Width="250" Content="Create room"/>
                 <Button x:Name="JoinRoom" wptoolkit:TiltEffect.IsTiltEnabled="True" Click="JoinRoom_Click" Height="80" Width="250" Content="Join room"/>
+                <Line X1="0" X2="1" Stretch="Fill" Stroke="LightGray" StrokeThickness="2" Margin="0,20,0,20" />
+                <Button x:Name="Speak" wptoolkit:TiltEffect.IsTiltEnabled="True" Click="Speak_Click" Height="80" Width="150" Content="Speak"/>
             </StackPanel>
         </Grid>
 
