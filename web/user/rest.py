@@ -201,11 +201,10 @@ class EventViewSet(viewsets.ViewSet):
             return Response(viewset_response(
                 "The user is not in the given room", {}))
 
-        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
-            f.write(str(user.key) + '@' + str(room.id) + " : GET\n")
-            for i in room.user.all():
-                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
-            f.close()
+        logger(str(user.key) + '@' + str(room.id) + " : GET")
+        for i in room.user.all():
+            logger(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")")
+            
 
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
@@ -236,7 +235,7 @@ class EventViewSet(viewsets.ViewSet):
         # Save user information
 	if _bbox_x1 == None or _bbox_x2 == None or _bbox_y1 == None or _bbox_y2 == None:
             return Response(viewset_response(
-                "We need bounding box data to process this", {}))
+                "We need bounding box data to process this request", {}))
 		
         user.bounding_box.x1 = float(_bbox_x1)
         user.bounding_box.x2 = float(_bbox_x2)
@@ -245,9 +244,7 @@ class EventViewSet(viewsets.ViewSet):
         user.bounding_box.save()
         user.save()
 
-        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
-            f.write(str(user.key) + '@' + str(room.id) + " : POST (" + str(_bbox_x1) + ", " + str(_bbox_y1) + ") . (" + str(_bbox_x2) + ", " + str(_bbox_y2) + ")\n")
-            f.close()
+        logger(str(user.key) + '@' + str(room.id) + " : POST (" + str(_bbox_x1) + ", " + str(_bbox_y1) + ") . (" + str(_bbox_x2) + ", " + str(_bbox_y2) + ")\n")
 
 
         # This handles all the computations needed and saves the required data
@@ -278,10 +275,8 @@ class EventViewSet(viewsets.ViewSet):
             user0.save()
             user1.save()
 
-        with open(os.path.join(settings.MEDIA_ROOT, "event.log"), 'a') as f:
-            for i in room.user.all():
-                f.write(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")\n")
-            f.close()
+        for i in room.user.all():
+            logger(str(i.key) + '@' + str(room.id) + " : box (" + str(i.bounding_box.x1) + ", " + str(i.bounding_box.y1) + ") . (" + str(i.bounding_box.x2) + ", " + str(i.bounding_box.y2) + ")")
 
         bbox = user.bounding_box
         bbox_data = BoundingBoxSerializer(bbox).data
